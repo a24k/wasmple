@@ -2,4 +2,4 @@
 
 # wasmple
 
-a sample project for WebAssembly with Rust.
+a sample project for WebAssembly with Rust & SolidJS.

@@ -1,6 +1,6 @@
 [package]
 name = "wasmple"
-description = "a sample project for WebAssembly with Rust."
+description = "a sample project for WebAssembly with Rust & SolidJS."
 version = "0.0.3"
 edition = "2021"
 

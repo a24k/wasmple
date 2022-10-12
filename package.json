@@ -1,7 +1,7 @@
 {
     "name": "wasmple",
     "version": "0.0.3",
-    "description": "a sample project for WebAssembly with Rust.",
+    "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "prebuild:wasm": "rimraf ./wasmple/target",
         "build:wasm": "cd ./wasmple && cargo build --release",
