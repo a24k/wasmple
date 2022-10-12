@@ -1,0 +1,38 @@
+{
+    "name": "wasmple",
+    "version": "0.0.3",
+    "description": "a sample project for WebAssembly with Rust & SolidJS.",
+    "scripts": {
+        "prebuild:wasm": "rimraf ./wasmple/target",
+        "build:wasm": "cd ./wasmple && cargo build --release",
+        "postbuild:wasm": "wasm-snip -o ./wasmple/target/wasm32-unknown-unknown/release/wasmple.wasm ./wasmple/target/wasm32-unknown-unknown/release/wasmple.wasm",
+        "prebuild:vite": "rimraf ./dist",
+        "build:vite": "vite build",
+        "build": "run-s build:wasm build:vite",
+        "dev:wasm": "cd ./wasmple && cargo watch -x 'build --release'",
+        "dev:vite": "vite --clearScreen false",
+        "dev": "run-p dev:wasm dev:vite",
+        "check:wasm": "cd ./wasmple && cargo check",
+        "check:vite": "eslint ./src/*.js",
+        "check": "run-s check:wasm check:vite",
+        "clean": "rimraf ./wasmple/target ./dist"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.40.0",
+        "@typescript-eslint/parser": "^5.40.0",
+        "autoprefixer": "^10.4.12",
+        "cssnano": "^5.1.13",
+        "eslint": "^8.25.0",
+        "eslint-plugin-solid": "^0.7.3",
+        "npm-run-all": "^4.1.5",
+        "rimraf": "^3.0.2",
+        "tailwindcss": "^3.1.8",
+        "typescript": "^4.8.4",
+        "vite": "^3.1.7",
+        "vite-plugin-solid": "^2.3.9"
+    },
+    "dependencies": {
+        "solid-js": "^1.5.7"
+    }
+}

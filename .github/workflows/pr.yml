@@ -1,0 +1,34 @@
+name: on_pull_request
+
+on: pull_request
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        rust-target:
+          - wasm32-unknown-unknown
+        node-version:
+          - 16.x
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/cache_cargo
+      - name: rust target ${{ matrix.rust-target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.rust-target }}
+          override: true
+      - name: use node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run check
