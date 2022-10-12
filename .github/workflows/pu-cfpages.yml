@@ -20,17 +20,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: rust target $rust-target
+      - name: rust target ${{ env.rust-target }}
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: $rust-target
+          target: ${{ env.rust-target }}
           override: true
       - run: cargo install wasm-snip
-      - name: use node.js $node-version
+      - name: use node.js ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: $node-version
+          node-version: ${{ env.node-version }}
       - run: npm install
       - run: npm run build
       - name: public to cloudflare pages
