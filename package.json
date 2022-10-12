@@ -1,0 +1,15 @@
+{
+    "name": "wasmple",
+    "version": "0.0.1",
+    "description": "a sample project for WebAssembly with Rust.",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite --clearScreen false",
+        "clean": "rimraf ./dist"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "rimraf": "^3.0.2",
+        "vite": "^3.1.7"
+    }
+}
