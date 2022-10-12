@@ -34,7 +34,7 @@ jobs:
           node-version: ${{ env.node-version }}
       - run: npm install
       - run: npm run build
-      - name: public to cloudflare pages
+      - name: publish to cloudflare pages
         uses: cloudflare/pages-action@1
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
