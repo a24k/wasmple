@@ -27,14 +27,14 @@ jobs:
           toolchain: stable
           target: ${{ env.rust-target }}
           override: true
-      - run: cargo install wasm-snip
+      - run: cargo install --force wasm-snip
       - name: use node.js ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.node-version }}
       - run: npm install
       - run: npm run build
-      - name: public to cloudflare pages
+      - name: publish to cloudflare pages
         uses: cloudflare/pages-action@1
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
