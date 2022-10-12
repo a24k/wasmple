@@ -1,4 +1,4 @@
-import { createSignal, createResource } from 'solid-js';
+import { createSignal, createResource, Show } from 'solid-js';
 import type { Component } from 'solid-js';
 
 import { Wasmple } from './wasmple';
@@ -9,6 +9,12 @@ const App: Component = () => {
         await new Promise((r) => setTimeout(r, 1000));
         return wasmple;
     });
+
+    const [left, setLeft] = createSignal(0);
+    const [right, setRight] = createSignal(0);
+
+    setInterval(() => setLeft(left() + 1), 110);
+    setInterval(() => setRight(right() + 1), 190);
 
     return (
         <>
@@ -25,20 +31,13 @@ const App: Component = () => {
                 </div>
 
                 <div class="absolute inset-0 transition duration-300 flex flex-col justify-center items-center"
-                    classList={{ "opacity-100": wasmple() !== undefined, "opacity-0": !wasmple(), }}
+                    classList={{ "opacity-100": wasmple() !== undefined, "opacity-0": wasmple() === undefined, }}
                 >
-                    <div>
-                        <button
-                            class="mr-2 my-1 px-3 py-2 rounded-md font-medium text-sm text-white transition duration-300"
-                        >
-                            START
-                        </button>
-                        <button
-                            class="mr-2 my-1 px-3 py-2 rounded-md font-medium text-sm text-white transision duration-300"
-                        >
-                            STOP
-                        </button>
-                    </div>
+                    <Show when={wasmple()}>
+                        <p class="font-mono text-xl">
+                            {left()} + {right()} = {wasmple().add(left(), right())}
+                        </p>
+                    </Show>
                 </div>
             </div>
         </>
