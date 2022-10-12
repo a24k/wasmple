@@ -1,0 +1,45 @@
+name: on_push_cfpages
+
+on: push
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      deployments: write
+
+    env:
+      rust-target:
+        - wasm32-unknown-unknown
+      node-version:
+        - 16.x
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: rust target $rust-target
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: $rust-target
+          override: true
+      - run: cargo install wasm-snip
+      - name: use node.js $node-version
+        uses: actions/setup-node@v3
+        with:
+          node-version: $node-version
+      - run: npm install
+      - run: npm run build
+      - name: public to cloudflare pages
+        uses: cloudflare/pages-action@1
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          projectName: wasmple
+          directory: ./dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
