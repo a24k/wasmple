@@ -27,7 +27,10 @@ jobs:
           toolchain: stable
           target: ${{ env.rust-target }}
           override: true
-      - run: cargo install --force wasm-snip
+      - uses: actions-rs/install@v0.1
+        with:
+          crate: wasm-snip
+          version: latest
       - name: use node.js ${{ env.node-version }}
         uses: actions/setup-node@v3
         with:
