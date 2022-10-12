@@ -15,10 +15,8 @@ jobs:
       deployments: write
 
     env:
-      rust-target:
-        - wasm32-unknown-unknown
-      node-version:
-        - 16.x
+      rust-target: wasm32-unknown-unknown
+      node-version: 16.x
 
     steps:
       - uses: actions/checkout@v3
