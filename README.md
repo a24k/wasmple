@@ -1,6 +1,5 @@
-
-[![on_pull_request](https://github.com/a24k/wasmple/actions/workflows/pr.yml/badge.svg)](https://github.com/a24k/wasmple/actions/workflows/pr.yml)
-[![on_push_cfpages](https://github.com/a24k/wasmple/actions/workflows/pu-cfpages.yml/badge.svg)](https://github.com/a24k/wasmple/actions/workflows/pu-cfpages.yml)
+[![check and test](https://github.com/a24k/wasmple/actions/workflows/ct.yml/badge.svg)](https://github.com/a24k/wasmple/actions/workflows/ct.yml)
+[![delivery to cloudflare pages](https://github.com/a24k/wasmple/actions/workflows/cd-cfpages.yml/badge.svg)](https://github.com/a24k/wasmple/actions/workflows/cd-cfpages.yml)
 
 # wasmple
 
@@ -16,3 +15,9 @@
 - setup Node.js and SolidJS for build FrontEnd.
 - implement `add` function on Rust and call it from SolidJS.
 
+## improve-actions
+
+- refine npm scripts.
+- refine github actions.
+- implement `sub` function on Rust and call it from SolidJS.
+- apply rust-cache action.

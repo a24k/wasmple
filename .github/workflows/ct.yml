@@ -23,7 +23,11 @@ jobs:
           toolchain: stable
           target: ${{ env.rust-target }}
           override: true
-      - uses: ./.github/actions/cache_cargo
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ runner.os }}
+          workspaces: |
+            wasmple
       - run: npm install
       - run: npm run check
   test:
@@ -43,6 +47,10 @@ jobs:
           toolchain: stable
           target: ${{ env.rust-target }}
           override: true
-      - uses: ./.github/actions/cache_cargo
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ runner.os }}
+          workspaces: |
+            wasmple
       - run: npm install
       - run: npm run test
