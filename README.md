@@ -17,6 +17,8 @@
 
 ## improve-actions
 
+[Source](https://github.com/a24k/wasmple/tree/7eeb1bf65e563d45085a930586dc0cf27dfd7ed7) / [Demo](https://fd5aface.wasmple.pages.dev/)
+
 - refine npm scripts.
 - refine github actions.
 - implement `sub` function on Rust and call it from SolidJS.
