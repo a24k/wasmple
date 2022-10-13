@@ -1,4 +1,4 @@
-name: on_push_cfpages
+name: delivery to cloudflare pages
 
 on: push
 
@@ -6,33 +6,36 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  publish:
-
+  deploy:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       deployments: write
-
     env:
       rust-target: wasm32-unknown-unknown
       node-version: 16.x
-
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/cache_cargo
+      - name: use node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
       - name: rust target ${{ env.rust-target }}
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: ${{ env.rust-target }}
           override: true
-      - run: cargo install --force wasm-snip
-      - name: use node.js ${{ env.node-version }}
-        uses: actions/setup-node@v3
+      - uses: Swatinem/rust-cache@v2
         with:
-          node-version: ${{ env.node-version }}
+          shared-key: ${{ runner.os }}
+          workspaces: |
+            wasmple
+      - run: cargo install wasm-snip
+        continue-on-error: true
       - run: npm install
+      - run: npm run clean
+        if: github.ref == 'refs/heads/main'
       - run: npm run build
       - name: publish to cloudflare pages
         uses: cloudflare/pages-action@1

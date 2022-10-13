@@ -1,4 +1,4 @@
-import wasmurl from '../wasmple/target/wasm32-unknown-unknown/release/wasmple.wasm?url';
+import wasmurl from '../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?url';
 
 export class Wasmple {
 
@@ -14,6 +14,10 @@ export class Wasmple {
 
     add(left, right) {
         return this.wasm.add(left, right);
+    }
+
+    sub(left, right) {
+        return this.wasm.sub(left, right);
     }
 
 }
