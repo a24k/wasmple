@@ -17,8 +17,6 @@
         "check:wasm": "cd ./wasmple && cargo check --target wasm32-unknown-unknown",
         "check:js": "eslint ./src/*.js",
         "check": "run-s check:wasm check:js",
-        "test:wasm": "cd ./wasmple && cargo test",
-        "test": "run-s test:wasm",
         "clean": "rimraf ./wasmple/target ./dist"
     },
     "license": "MIT",
