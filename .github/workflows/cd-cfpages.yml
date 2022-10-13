@@ -1,6 +1,6 @@
 name: delivery to cloudflare pages
 
-on: pull_request
+on: push
 
 env:
   CARGO_TERM_COLOR: always
@@ -31,6 +31,7 @@ jobs:
         continue-on-error: true
       - run: npm install
       - run: npm run clean
+        if: github.ref == 'refs/heads/main'
       - run: npm run build
       - name: publish to cloudflare pages
         uses: cloudflare/pages-action@1
