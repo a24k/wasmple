@@ -13,8 +13,8 @@ const App: Component = () => {
     const [left, setLeft] = createSignal(0);
     const [right, setRight] = createSignal(0);
 
-    setInterval(() => setLeft(left() + 1), 110);
-    setInterval(() => setRight(right() + 1), 190);
+    setInterval(() => setLeft(left() + 1), 300);
+    setInterval(() => setRight(right() + 1), 450);
 
     return (
         <>
@@ -36,6 +36,9 @@ const App: Component = () => {
                     <Show when={wasmple()}>
                         <p class="font-mono text-xl">
                             {left()} + {right()} = {wasmple().add(left(), right())}
+                        </p>
+                        <p class="font-mono text-xl">
+                            {left()} - {right()} = {wasmple().sub(left(), right())}
                         </p>
                     </Show>
                 </div>

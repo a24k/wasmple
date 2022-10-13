@@ -16,4 +16,8 @@ export class Wasmple {
         return this.wasm.add(left, right);
     }
 
+    sub(left, right) {
+        return this.wasm.sub(left, right);
+    }
+
 }
