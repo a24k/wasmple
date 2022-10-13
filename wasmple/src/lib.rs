@@ -1,6 +1,11 @@
 mod console;
 
 #[no_mangle]
+pub extern "C" fn init() -> bool {
+    console::init()
+}
+
+#[no_mangle]
 #[allow(unreachable_code)]
 pub extern "C" fn hello() {
     panic!("OMG - あたふた・・・");

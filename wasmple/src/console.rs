@@ -1,6 +1,20 @@
+use std::panic;
+use std::sync::Once;
+
 #[link(wasm_import_module = "console")]
 extern "C" {
     fn console_message(level: u8, ptr: *const u16, len: usize);
+}
+
+pub fn init() -> bool {
+    static ONCE: Once = Once::new();
+    ONCE.call_once(|| {
+        fn panic_hook(info: &panic::PanicInfo) {
+            error(info.to_string());
+        }
+        panic::set_hook(Box::new(panic_hook));
+    });
+    ONCE.is_completed()
 }
 
 enum LogLevel {

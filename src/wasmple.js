@@ -16,6 +16,8 @@ export class Wasmple {
         };
 
         this.wasm = (await WebAssembly.instantiate(wasmbin, imports)).instance.exports;
+
+        this.wasm.init();
     }
 
     _imports_console = {
