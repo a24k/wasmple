@@ -10,12 +10,6 @@ const App: Component = () => {
         return wasmple;
     });
 
-    const [left, setLeft] = createSignal(0);
-    const [right, setRight] = createSignal(0);
-
-    setInterval(() => setLeft(left() + 1), 300);
-    setInterval(() => setRight(right() + 1), 450);
-
     return (
         <>
             <div class="h-screen relative transition duration-300 flex flex-col justify-center items-center"
@@ -34,12 +28,12 @@ const App: Component = () => {
                     classList={{ "opacity-100": wasmple() !== undefined, "opacity-0": wasmple() === undefined, }}
                 >
                     <Show when={wasmple()}>
-                        <p class="font-mono text-xl">
-                            {left()} + {right()} = {wasmple().add(left(), right())}
-                        </p>
-                        <p class="font-mono text-xl">
-                            {left()} - {right()} = {wasmple().sub(left(), right())}
-                        </p>
+                        <button
+                            class="px-3 py-2 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 font-mono text-xl"
+                            onclick={() => wasmple().hello()}
+                        >
+                            say hello
+                        </button>
                     </Show>
                 </div>
             </div>

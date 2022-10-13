@@ -4,7 +4,16 @@ export class Wasmple {
 
     static async prelude() {
         const wasmbin = await (await fetch(wasmurl)).arrayBuffer();
-        const wasm = (await WebAssembly.instantiate(wasmbin)).instance;
+
+        const imports = {
+            env: {
+                console_log: () => {
+                    console.log("Hello WebAssembly!");
+                },
+            },
+        };
+
+        const wasm = (await WebAssembly.instantiate(wasmbin, imports)).instance;
         return new Wasmple(wasm);
     }
 
@@ -12,12 +21,8 @@ export class Wasmple {
         this.wasm = wasm.exports;
     }
 
-    add(left, right) {
-        return this.wasm.add(left, right);
-    }
-
-    sub(left, right) {
-        return this.wasm.sub(left, right);
+    hello() {
+        return this.wasm.hello();
     }
 
 }
