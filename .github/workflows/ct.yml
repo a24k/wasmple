@@ -1,0 +1,48 @@
+name: check & test
+
+on: pull_request
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      rust-target: wasm32-unknown-unknown
+      node-version: 16.x
+    steps:
+      - uses: actions/checkout@v3
+      - name: use node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+      - name: rust target ${{ env.rust-target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ env.rust-target }}
+          override: true
+      - uses: ./.github/actions/cache_cargo
+      - run: npm install
+      - run: npm run check
+  test:
+    runs-on: ubuntu-latest
+    env:
+      rust-target: wasm32-unknown-unknown
+      node-version: 16.x
+    steps:
+      - uses: actions/checkout@v3
+      - name: use node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+      - name: rust target ${{ env.rust-target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ env.rust-target }}
+          override: true
+      - uses: ./.github/actions/cache_cargo
+      - run: npm install
+      - run: npm run test
