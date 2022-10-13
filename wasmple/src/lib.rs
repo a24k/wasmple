@@ -1,26 +1,17 @@
+mod console;
+
 #[no_mangle]
-pub extern "C" fn add(left: i32, right: i32) -> i32 {
-    left + right
+pub extern "C" fn init() -> bool {
+    console::init()
 }
 
 #[no_mangle]
-pub extern "C" fn sub(left: i32, right: i32) -> i32 {
-    left - right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works_add() {
-        let result = add(2, 3);
-        assert_eq!(result, 5);
-    }
-
-    #[test]
-    fn it_works_sub() {
-        let result = sub(2, 3);
-        assert_eq!(result, -1);
-    }
+#[allow(unreachable_code)]
+pub extern "C" fn hello() {
+    panic!("OMG - あたふた・・・");
+    console::log(format!("LOG - ログだよ！"));
+    console::debug(format!("DEBUG - デバッグだよ！"));
+    console::info(format!("INFO - インフォメーションだよ！"));
+    console::warn(format!("WARN - ワーニングだよ！"));
+    console::error(format!("ERROR - エラーだよ！"));
 }

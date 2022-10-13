@@ -1,6 +1,6 @@
 {
     "name": "wasmple",
-    "version": "0.0.4",
+    "version": "0.1.2",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "build:wasm": "cd ./wasmple && cargo build --target wasm32-unknown-unknown --release",
@@ -17,8 +17,6 @@
         "check:wasm": "cd ./wasmple && cargo check --target wasm32-unknown-unknown",
         "check:js": "eslint ./src/*.js",
         "check": "run-s check:wasm check:js",
-        "test:wasm": "cd ./wasmple && cargo test",
-        "test": "run-s test:wasm",
         "clean": "rimraf ./wasmple/target ./dist"
     },
     "license": "MIT",
