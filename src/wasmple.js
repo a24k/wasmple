@@ -42,22 +42,28 @@ export class Wasmple {
 
     alloc_and_free() {
         const ptr1 = this.wasm.alloc(0x100);
-        console.log("js: ptr1 = 0x" + ptr1.toString(16));
+        console.log("js: ptr1 allocated\tat 0x" + ptr1.toString(16));
 
         const ptr2 = this.wasm.alloc(0x100);
-        console.log("js: ptr2 = 0x" + ptr2.toString(16));
+        console.log("js: ptr2 allocated\tat 0x" + ptr2.toString(16));
 
-        this.wasm.free(ptr1);
+        const len1 = this.wasm.free(ptr1);
+        console.log("js: ptr1 free " + len1 + " bytes");
 
         const ptr3 = this.wasm.alloc(0x80);
-        console.log("js: ptr3 = 0x" + ptr3.toString(16));
+        console.log("js: ptr3 allocated\tat 0x" + ptr3.toString(16));
 
         const ptr4 = this.wasm.alloc(0x80);
-        console.log("js: ptr4 = 0x" + ptr4.toString(16));
+        console.log("js: ptr4 allocated\tat 0x" + ptr4.toString(16));
 
-        this.wasm.free(ptr2);
-        this.wasm.free(ptr3);
-        this.wasm.free(ptr4);
+        const len2 = this.wasm.free(ptr2);
+        console.log("js: ptr2 free " + len2 + " bytes");
+
+        const len3 = this.wasm.free(ptr3);
+        console.log("js: ptr3 free " + len3 + " bytes");
+
+        const len4 = this.wasm.free(ptr4);
+        console.log("js: ptr4 free " + len4 + " bytes");
     }
 
 }
