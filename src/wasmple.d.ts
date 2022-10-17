@@ -1,5 +1,5 @@
 export class Wasmple {
     static prelude(): Promise<Wasmple>;
 
-    hello(): void;
+    alloc_and_free(): void;
 }

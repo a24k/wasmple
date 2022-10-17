@@ -30,9 +30,9 @@ const App: Component = () => {
                     <Show when={wasmple()}>
                         <button
                             class="px-3 py-2 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 font-mono text-xl"
-                            onclick={() => wasmple().hello()}
+                            onclick={() => wasmple().alloc_and_free()}
                         >
-                            say hello
+                            alloc & free
                         </button>
                     </Show>
                 </div>

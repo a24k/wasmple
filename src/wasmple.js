@@ -40,8 +40,24 @@ export class Wasmple {
         },
     };
 
-    hello() {
-        return this.wasm.hello();
+    alloc_and_free() {
+        const ptr1 = this.wasm.alloc(0x100);
+        console.log("js: ptr1 = 0x" + ptr1.toString(16));
+
+        const ptr2 = this.wasm.alloc(0x100);
+        console.log("js: ptr2 = 0x" + ptr2.toString(16));
+
+        this.wasm.free(ptr1);
+
+        const ptr3 = this.wasm.alloc(0x80);
+        console.log("js: ptr3 = 0x" + ptr3.toString(16));
+
+        const ptr4 = this.wasm.alloc(0x80);
+        console.log("js: ptr4 = 0x" + ptr4.toString(16));
+
+        this.wasm.free(ptr2);
+        this.wasm.free(ptr3);
+        this.wasm.free(ptr4);
     }
 
 }
