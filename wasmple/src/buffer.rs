@@ -1,5 +1,6 @@
 use once_cell::sync::Lazy;
 use std::alloc;
+use std::alloc::Layout;
 use std::collections::HashMap;
 use std::mem;
 use std::sync::Mutex;
@@ -19,7 +20,7 @@ fn _alloc(size: BufLen) -> *mut u8 {
     assert_ne!(size, 0);
 
     let align = mem::align_of::<u8>();
-    let layout = alloc::Layout::from_size_align(size, align).unwrap();
+    let layout = Layout::from_size_align(size, align).unwrap();
     let ptr = unsafe { alloc::alloc(layout) };
 
     assert!(!ptr.is_null());
@@ -27,7 +28,7 @@ fn _alloc(size: BufLen) -> *mut u8 {
     let ptr = BufPtr(ptr);
     let len = layout.size();
 
-    console::log(format!("rs: alloc(ptr: {:?}, len: 0x{:x})", ptr, len));
+    console::log(format!("rs: alloc(ptr: {:?}, len: 0x{:x}, layout: {:?})", ptr, len, layout));
 
     BUFS.lock().unwrap().insert(ptr, len);
 
@@ -40,8 +41,9 @@ fn _free(ptr: *mut u8) {
     console::log(format!("rs: free(ptr: {:?}, len: 0x{:x})", ptr, len));
 
     unsafe {
-        let s = std::slice::from_raw_parts_mut(ptr, len);
-        let _ = Box::from_raw(s);
+        let align = mem::align_of::<u8>();
+        let layout = Layout::from_size_align_unchecked(len, align);
+        alloc::dealloc(ptr, layout);
     }
 }
 
