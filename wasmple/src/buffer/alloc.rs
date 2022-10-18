@@ -1,6 +1,4 @@
-use std::alloc;
 use std::alloc::Layout;
-use std::mem;
 
 use crate::console;
 
@@ -9,12 +7,12 @@ use super::buffer::{BufPtr, LAYS};
 pub(super) fn alloc(len: usize) -> BufPtr {
     assert_ne!(len, 0);
 
-    let align = mem::align_of::<u8>();
+    let align = std::mem::align_of::<u8>();
     let layout = Layout::from_size_align(len, align).unwrap();
 
     let mut lays = LAYS.lock().unwrap();
 
-    let ptr = unsafe { alloc::alloc(layout) };
+    let ptr = unsafe { std::alloc::alloc(layout) };
 
     assert!(!ptr.is_null());
 
@@ -41,7 +39,7 @@ pub(super) fn free(ptr: BufPtr) -> usize {
             ));
             console::debug(format!("rs: buffer::LAYS\t{:?}", lays));
             unsafe {
-                alloc::dealloc(ptr as *mut u8, layout);
+                std::alloc::dealloc(ptr as *mut u8, layout);
                 layout.size()
             }
         }
