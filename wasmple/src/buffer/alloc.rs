@@ -28,6 +28,15 @@ pub(super) fn alloc(len: usize) -> BufPtr {
     ptr
 }
 
+pub(super) fn size_of(ptr: BufPtr) -> usize {
+    let lays = LAYS.lock().unwrap();
+
+    match lays.get(&ptr) {
+        Some(layout) => layout.size(),
+        None => 0,
+    }
+}
+
 pub(super) fn free(ptr: BufPtr) -> usize {
     let mut lays = LAYS.lock().unwrap();
 

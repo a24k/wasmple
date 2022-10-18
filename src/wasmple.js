@@ -41,29 +41,51 @@ export class Wasmple {
     };
 
     alloc_and_free() {
-        const ptr1 = this.wasm.alloc(0x100);
-        console.log("js: ptr1 allocated\tat 0x" + ptr1.toString(16));
+        const _allocate_with_log = (name, len) => {
+            const ptr = this.wasm.alloc(len);
 
-        const ptr2 = this.wasm.alloc(0x100);
-        console.log("js: ptr2 allocated\tat 0x" + ptr2.toString(16));
+            console.log("js: " + name + " allocated"
+                + "\tat 0x" + ptr.toString(16)
+                + "\twith " + this.wasm.size_of(ptr) + " bytes");
 
-        const len1 = this.wasm.free(ptr1);
-        console.log("js: ptr1 free " + len1 + " bytes");
+            return ptr;
+        }
 
-        const ptr3 = this.wasm.alloc(0x80);
-        console.log("js: ptr3 allocated\tat 0x" + ptr3.toString(16));
+        const _log_size_of = (name, ptr) => {
+            const len = this.wasm.size_of(ptr);
 
-        const ptr4 = this.wasm.alloc(0x80);
-        console.log("js: ptr4 allocated\tat 0x" + ptr4.toString(16));
+            console.log("js: " + name + " has " + len + " bytes");
 
-        const len2 = this.wasm.free(ptr2);
-        console.log("js: ptr2 free " + len2 + " bytes");
+            return len;
+        }
 
-        const len3 = this.wasm.free(ptr3);
-        console.log("js: ptr3 free " + len3 + " bytes");
+        const _free_with_log = (name, ptr) => {
+            const len = this.wasm.free(ptr);
 
-        const len4 = this.wasm.free(ptr4);
-        console.log("js: ptr4 free " + len4 + " bytes");
+            console.log("js: " + name + " freed "
+                + "\t" + len + " bytes");
+
+            return len;
+        }
+
+        const ptr1 = _allocate_with_log("ptr1", 0x100);
+        const ptr2 = _allocate_with_log("ptr2", 0x100);
+
+        _log_size_of("ptr1", ptr1);
+
+        _free_with_log("ptr1", ptr1);
+
+        _log_size_of("ptr1", ptr1);
+
+        const ptr3 = _allocate_with_log("ptr3", 0x80);
+
+        _log_size_of("ptr1", ptr1);
+
+        const ptr4 = _allocate_with_log("ptr4", 0x80);
+
+        _free_with_log("ptr2", ptr2);
+        _free_with_log("ptr3", ptr3);
+        _free_with_log("ptr4", ptr4);
     }
 
 }
