@@ -1,4 +1,4 @@
-import { createSignal, createResource, Show } from 'solid-js';
+import { createResource, Show } from 'solid-js';
 import type { Component } from 'solid-js';
 
 import { Wasmple } from './wasmple';
@@ -24,15 +24,15 @@ const App: Component = () => {
                     </div>
                 </div>
 
-                <div class="absolute inset-0 transition duration-300 flex flex-col justify-center items-center"
+                <div class="absolute inset-0 transition duration-300 flex flex-col justify-center items-center gap-4"
                     classList={{ "opacity-100": wasmple() !== undefined, "opacity-0": wasmple() === undefined, }}
                 >
                     <Show when={wasmple()}>
                         <button
                             class="px-3 py-2 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 font-mono text-xl"
-                            onclick={() => wasmple().alloc_and_free()}
+                            onclick={() => wasmple().prepare_string_buffer("🦀 💓 🦐")}
                         >
-                            alloc & free
+                            prepare string buffer
                         </button>
                     </Show>
                 </div>

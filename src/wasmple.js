@@ -40,52 +40,19 @@ export class Wasmple {
         },
     };
 
-    alloc_and_free() {
-        const _allocate_with_log = (name, len) => {
-            const ptr = this.wasm.alloc(len);
+    prepare_string_buffer(str) {
+        const len = str.length; // number of UTF-16 code units
+        const ptr = this.wasm.alloc(len * 2);
 
-            console.log("js: " + name + " allocated"
-                + "\tat 0x" + ptr.toString(16)
-                + "\twith " + this.wasm.size_of(ptr) + " bytes");
+        const buf = new Uint16Array(this.wasm.memory.buffer, ptr, len);
 
-            return ptr;
+        for (var i = 0; i < len; ++i) {
+            buf[i] = str.charCodeAt(i);
         }
 
-        const _log_size_of = (name, ptr) => {
-            const len = this.wasm.size_of(ptr);
+        console.log(buf);
 
-            console.log("js: " + name + " has " + len + " bytes");
-
-            return len;
-        }
-
-        const _free_with_log = (name, ptr) => {
-            const len = this.wasm.free(ptr);
-
-            console.log("js: " + name + " freed "
-                + "\t" + len + " bytes");
-
-            return len;
-        }
-
-        const ptr1 = _allocate_with_log("ptr1", 0x100);
-        const ptr2 = _allocate_with_log("ptr2", 0x100);
-
-        _log_size_of("ptr1", ptr1);
-
-        _free_with_log("ptr1", ptr1);
-
-        _log_size_of("ptr1", ptr1);
-
-        const ptr3 = _allocate_with_log("ptr3", 0x80);
-
-        _log_size_of("ptr1", ptr1);
-
-        const ptr4 = _allocate_with_log("ptr4", 0x80);
-
-        _free_with_log("ptr2", ptr2);
-        _free_with_log("ptr3", ptr3);
-        _free_with_log("ptr4", ptr4);
+        this.wasm.free(ptr);
     }
 
 }

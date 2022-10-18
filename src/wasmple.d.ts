@@ -1,5 +1,5 @@
 export class Wasmple {
     static prelude(): Promise<Wasmple>;
 
-    alloc_and_free(): void;
+    prepare_string_buffer(str: string): void;
 }
