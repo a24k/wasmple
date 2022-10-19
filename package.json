@@ -1,6 +1,6 @@
 {
     "name": "wasmple",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "build:wasm": "cd ./wasmple && cargo build --target wasm32-unknown-unknown --release",
@@ -21,6 +21,7 @@
     },
     "license": "MIT",
     "devDependencies": {
+        "@tailwindcss/forms": "^0.5.3",
         "@typescript-eslint/eslint-plugin": "^5.40.0",
         "@typescript-eslint/parser": "^5.40.0",
         "autoprefixer": "^10.4.12",
