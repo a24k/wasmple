@@ -1,4 +1,4 @@
-import { createResource, Show } from 'solid-js';
+import { createSignal, createResource, Show } from 'solid-js';
 import type { Component } from 'solid-js';
 
 import { Wasmple } from './wasmple';
@@ -9,6 +9,9 @@ const App: Component = () => {
         await new Promise((r) => setTimeout(r, 1000));
         return wasmple;
     });
+
+    const [message, setMessage] = createSignal("か🦀に は💓と え🦐び");
+    const reverseMessage = () => message().length == 0 ? "" : wasmple().reverse_string(message());
 
     return (
         <>
@@ -28,12 +31,18 @@ const App: Component = () => {
                     classList={{ "opacity-100": wasmple() !== undefined, "opacity-0": wasmple() === undefined, }}
                 >
                     <Show when={wasmple()}>
-                        <button
-                            class="px-3 py-2 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 font-mono text-xl"
-                            onClick={() => wasmple().reverse_string("🦀 💓 🦐")}
-                        >
-                            reverse string
-                        </button>
+                        <div>
+                            <label for="message" class="block mb-1 text-md">input</label>
+                            <input id="message" type="text" value={message()} onInput={(e) => setMessage(e.currentTarget.value)}
+                                class="block w-96 p-2 bg-zinc-700 border border-zinc-500 rounded-md text-xl text-center focus:border-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label for="message" class="block mb-1 text-md">output (reversed)</label>
+                            <input id="message" type="text" value={reverseMessage()} disabled
+                                class="block w-96 p-2 bg-zinc-700 border-none rounded-md text-xl text-center"
+                            />
+                        </div>
                     </Show>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 export class Wasmple {
     static prelude(): Promise<Wasmple>;
 
-    reverse_string(str: string): void;
+    reverse_string(str: string): string;
 }

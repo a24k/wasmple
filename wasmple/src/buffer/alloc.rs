@@ -4,7 +4,7 @@ use crate::console;
 
 use super::buffer::{BufPtr, LAYS};
 
-pub(super) fn alloc(len: usize) -> BufPtr {
+pub fn alloc(len: usize) -> BufPtr {
     assert_ne!(len, 0);
 
     let align = std::mem::align_of::<u8>();
@@ -37,7 +37,7 @@ pub fn size_of(ptr: BufPtr) -> usize {
     }
 }
 
-pub(super) fn free(ptr: BufPtr) -> usize {
+pub fn free(ptr: BufPtr) -> usize {
     let mut lays = LAYS.lock().unwrap();
 
     match lays.remove(&ptr) {

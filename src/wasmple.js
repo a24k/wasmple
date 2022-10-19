@@ -46,19 +46,28 @@ export class Wasmple {
 
         const buf = new Uint16Array(this.wasm.memory.buffer, ptr, len);
 
-        for (var i = 0; i < len; ++i) {
-            buf[i] = str.charCodeAt(i);
-        }
+        for (var i = 0; i < len; ++i) { buf[i] = str.charCodeAt(i); }
 
         return ptr;
     }
 
-    reverse_string(str) {
-        const ptr = this._put_string_buffer(str);
+    _get_string_buffer(ptr) {
+        const len = this.wasm.size_of(ptr);
+        const chars = new Uint16Array(this.wasm.memory.buffer, ptr, len / 2);
+        return String.fromCharCode(...chars);
+    }
 
-        this.wasm.revstr(ptr);
+    reverse_string(input) {
+        const input_ptr = this._put_string_buffer(input);
 
-        this.wasm.free(ptr);
+        const output_ptr = this.wasm.reverse_string(input_ptr);
+
+        const output = this._get_string_buffer(output_ptr);
+
+        this.wasm.free(input_ptr);
+        this.wasm.free(output_ptr);
+
+        return output;
     }
 
 }
