@@ -15,7 +15,7 @@
         "predev": "run-s dev:wasm dev:copy",
         "dev": "run-p watch:wasm watch:copy watch:js",
         "check:wasm": "cd ./wasmple && cargo check --target wasm32-unknown-unknown",
-        "check:js": "eslint ./src/*.js",
+        "check:js": "eslint --ext .tsx,.ts,.jsx,.js ./src/",
         "check": "run-s check:wasm check:js",
         "clean": "rimraf ./wasmple/target ./dist"
     },
