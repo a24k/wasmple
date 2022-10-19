@@ -1,3 +1,3 @@
-mod alloc;
-mod buffer;
+pub mod alloc;
+pub mod buffer;
 mod export;

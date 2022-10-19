@@ -18,9 +18,9 @@ const App: Component = () => {
                     classList={{ "opacity-0": wasmple() !== undefined, "opacity-100": wasmple() === undefined, }}
                 >
                     <div class="flex justify-center">
-                        <span class="circle animate-loader"></span>
-                        <span class="circle animate-loader animation-delay-200"></span>
-                        <span class="circle animate-loader animation-delay-400"></span>
+                        <span class="circle animate-loader" />
+                        <span class="circle animate-loader animation-delay-200" />
+                        <span class="circle animate-loader animation-delay-400" />
                     </div>
                 </div>
 
@@ -30,9 +30,9 @@ const App: Component = () => {
                     <Show when={wasmple()}>
                         <button
                             class="px-3 py-2 rounded-md bg-blue-500 hover:bg-blue-600 active:bg-blue-700 font-mono text-xl"
-                            onclick={() => wasmple().prepare_string_buffer("🦀 💓 🦐")}
+                            onClick={() => wasmple().reverse_string("🦀 💓 🦐")}
                         >
-                            prepare string buffer
+                            reverse string
                         </button>
                     </Show>
                 </div>

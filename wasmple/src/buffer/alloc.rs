@@ -20,15 +20,15 @@ pub(super) fn alloc(len: usize) -> BufPtr {
     lays.insert(ptr, layout);
 
     console::log(format!(
-        "rs: buffer::alloc\tat 0x{:x}\twith {:?}",
+        "[wasm] buffer::alloc\tat 0x{:x}\twith {:?}",
         ptr, layout
     ));
-    console::debug(format!("rs: buffer::LAYS\t{:?}", lays));
+    console::debug(format!("[wasm] buffer::LAYS\t{:?}", lays));
 
     ptr
 }
 
-pub(super) fn size_of(ptr: BufPtr) -> usize {
+pub fn size_of(ptr: BufPtr) -> usize {
     let lays = LAYS.lock().unwrap();
 
     match lays.get(&ptr) {
@@ -43,10 +43,10 @@ pub(super) fn free(ptr: BufPtr) -> usize {
     match lays.remove(&ptr) {
         Some(layout) => {
             console::log(format!(
-                "rs: buffer::free\tat 0x{:x}\twith {:?})",
+                "[wasm] buffer::free\tat 0x{:x}\twith {:?})",
                 ptr, layout
             ));
-            console::debug(format!("rs: buffer::LAYS\t{:?}", lays));
+            console::debug(format!("[wasm] buffer::LAYS\t{:?}", lays));
             unsafe {
                 std::alloc::dealloc(ptr as *mut u8, layout);
                 layout.size()

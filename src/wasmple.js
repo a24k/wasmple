@@ -40,7 +40,7 @@ export class Wasmple {
         },
     };
 
-    prepare_string_buffer(str) {
+    _put_string_buffer(str) {
         const len = str.length; // number of UTF-16 code units
         const ptr = this.wasm.alloc(len * 2);
 
@@ -50,7 +50,13 @@ export class Wasmple {
             buf[i] = str.charCodeAt(i);
         }
 
-        console.log(buf);
+        return ptr;
+    }
+
+    reverse_string(str) {
+        const ptr = this._put_string_buffer(str);
+
+        this.wasm.revstr(ptr);
 
         this.wasm.free(ptr);
     }
