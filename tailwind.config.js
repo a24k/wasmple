@@ -1,5 +1,7 @@
+const withAnimation = require('animated-tailwindcss');
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = withAnimation({
     content: [
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx,css,md,mdx,html,json,scss}",
@@ -22,4 +24,4 @@ module.exports = {
     plugins: [
         require("@tailwindcss/forms"),
     ],
-}
+});
