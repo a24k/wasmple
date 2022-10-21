@@ -1,57 +1,64 @@
-use std::alloc::Layout;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
+use std::sync::Mutex;
 
 use crate::console;
 
-use super::buffer::{BufPtr, LAYS};
+use super::buffer::{Buffer, BufferPtr};
 
-pub fn alloc(len: usize) -> BufPtr {
-    assert_ne!(len, 0);
+#[derive(Debug)]
+pub enum BufferTypes {
+    U16(Buffer<u16>),
+}
 
-    let align = std::mem::align_of::<u8>();
-    let layout = Layout::from_size_align(len, align).unwrap();
+impl BufferTypes {
+    pub fn slice(&self) -> SliceTypes {
+        match self {
+            BufferTypes::U16(buf) => SliceTypes::U16(buf.slice()),
+        }
+    }
 
-    let mut lays = LAYS.lock().unwrap();
+    pub fn slice_mut(&mut self) -> SliceTypes {
+        match self {
+            BufferTypes::U16(buf) => SliceTypes::U16M(buf.slice_mut()),
+        }
+    }
+}
 
-    let ptr = unsafe { std::alloc::alloc(layout) };
+#[derive(Debug)]
+pub enum SliceTypes<'a> {
+    U16(&'a [u16]),
+    U16M(&'a mut [u16]),
+}
 
-    assert!(!ptr.is_null());
+pub static BUFFERS: Lazy<Mutex<HashMap<BufferPtr, BufferTypes>>> =
+    Lazy::new(|| Mutex::new(HashMap::new()));
 
-    let ptr = ptr as BufPtr;
-    lays.insert(ptr, layout);
-
-    console::log(format!(
-        "[wasm] buffer::alloc\tat 0x{:x}\twith {:?}",
-        ptr, layout
-    ));
-    console::debug(format!("[wasm] buffer::LAYS\t{:?}", lays));
-
+pub fn alloc_u16(length: usize) -> BufferPtr {
+    let mut buffers = BUFFERS.lock().unwrap();
+    let buf: Buffer<u16> = Buffer::new(length).unwrap();
+    let ptr = buf.ptr();
+    buffers.insert(ptr, BufferTypes::U16(buf));
+    console::debug(format!("[wasm] buffer::BUFFERS\t{:?}", buffers));
     ptr
 }
 
-pub fn size_of(ptr: BufPtr) -> usize {
-    let lays = LAYS.lock().unwrap();
-
-    match lays.get(&ptr) {
-        Some(layout) => layout.size(),
-        None => 0,
+pub fn length(ptr: BufferPtr) -> usize {
+    let buffers = BUFFERS.lock().unwrap();
+    match buffers.get(&ptr).unwrap() {
+        BufferTypes::U16(buf) => buf.length(),
     }
 }
 
-pub fn free(ptr: BufPtr) -> usize {
-    let mut lays = LAYS.lock().unwrap();
-
-    match lays.remove(&ptr) {
-        Some(layout) => {
-            console::log(format!(
-                "[wasm] buffer::free\tat 0x{:x}\twith {:?})",
-                ptr, layout
-            ));
-            console::debug(format!("[wasm] buffer::LAYS\t{:?}", lays));
-            unsafe {
-                std::alloc::dealloc(ptr as *mut u8, layout);
-                layout.size()
-            }
-        }
-        None => 0,
-    }
+pub fn dealloc(ptr: BufferPtr) {
+    let mut buffers = BUFFERS.lock().unwrap();
+    buffers.remove(&ptr);
+    console::debug(format!("[wasm] buffer::BUFFERS\t{:?}", buffers));
 }
+
+/*
+pub fn slice(ptr: BufferPtr) -> SliceTypes<'static> {
+    let buffers = BUFFERS.lock().unwrap();
+    buffers.get(&ptr).unwrap().slice()
+}
+*/

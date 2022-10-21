@@ -1,17 +1,17 @@
 use super::alloc;
-use super::buffer::BufPtr;
+use super::buffer::BufferPtr;
 
 #[no_mangle]
-pub extern "C" fn alloc(len: usize) -> BufPtr {
-    alloc::alloc(len)
+pub extern "C" fn alloc_u16(len: usize) -> BufferPtr {
+    alloc::alloc_u16(len)
 }
 
 #[no_mangle]
-pub extern "C" fn size_of(ptr: BufPtr) -> usize {
-    alloc::size_of(ptr)
+pub extern "C" fn length(ptr: BufferPtr) -> usize {
+    alloc::length(ptr)
 }
 
 #[no_mangle]
-pub extern "C" fn free(ptr: BufPtr) -> usize {
-    alloc::free(ptr)
+pub extern "C" fn dealloc(ptr: BufferPtr) {
+    alloc::dealloc(ptr)
 }

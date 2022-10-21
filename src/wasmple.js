@@ -42,7 +42,7 @@ export class Wasmple {
 
     _put_string_buffer(str) {
         const len = str.length; // number of UTF-16 code units
-        const ptr = this.wasm.alloc(len * 2);
+        const ptr = this.wasm.alloc_u16(len);
 
         const buf = new Uint16Array(this.wasm.memory.buffer, ptr, len);
 
@@ -52,8 +52,8 @@ export class Wasmple {
     }
 
     _get_string_buffer(ptr) {
-        const len = this.wasm.size_of(ptr);
-        const chars = new Uint16Array(this.wasm.memory.buffer, ptr, len / 2);
+        const len = this.wasm.length(ptr);
+        const chars = new Uint16Array(this.wasm.memory.buffer, ptr, len);
         return String.fromCharCode(...chars);
     }
 
@@ -64,8 +64,8 @@ export class Wasmple {
 
         const output = this._get_string_buffer(output_ptr);
 
-        this.wasm.free(input_ptr);
-        this.wasm.free(output_ptr);
+        this.wasm.dealloc(input_ptr);
+        this.wasm.dealloc(output_ptr);
 
         return output;
     }
