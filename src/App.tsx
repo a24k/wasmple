@@ -25,7 +25,7 @@ const App: Component = () => {
                     <span class="circle animate-loader animate-delay-[400ms]" />
                 </div>
 
-                <div class="absolute inset-0 flex flex-col justify-center items-center" classList={{
+                <div class="absolute inset-0 flex flex-col justify-center items-center gap-2" classList={{
                     "animate-fadeIn animate-faster": wasmple() !== undefined,
                     "opacity-0": wasmple() === undefined,
                 }}>
