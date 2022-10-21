@@ -11,6 +11,30 @@ fn dump<T: Debug>(value: &T) {
 }
 
 #[derive(Debug)]
+enum Union {
+    I32(Generic<i32>),
+    STR(Generic<String>),
+    U32(Generic<u32>),
+}
+
+#[derive(Debug)]
+enum ValueUnion<'a> {
+    I32(&'a i32),
+    STR(&'a String),
+    U32(&'a u32),
+}
+
+impl Union {
+    fn get(&self) -> ValueUnion {
+        match self {
+            Union::I32(gen) => ValueUnion::I32(gen.get()),
+            Union::STR(gen) => ValueUnion::STR(gen.get()),
+            Union::U32(gen) => ValueUnion::U32(gen.get()),
+        }
+    }
+}
+
+#[derive(Debug)]
 struct Generic<T>
 where
     T: Debug,
@@ -18,34 +42,37 @@ where
     value: T,
 }
 
-#[derive(Debug)]
-enum Union<'a> {
-    Int(Generic<i32>),
-    Str(Generic<&'a str>),
-    UInt(Generic<u32>),
-}
-
-impl<T> Drop for Generic<T>
-where
-    T: Debug,
-{
-    fn drop(&mut self) {
-        dump(self);
+impl<T: Debug> Generic<T> {
+    fn get(&self) -> &T {
+        &self.value
     }
 }
 
 fn main() {
     let mut map = MAP.lock().unwrap();
 
-    println!("[main] insert 3 items");
-    map.insert(1, Union::Int(Generic { value: 11 }));
-    map.insert(2, Union::Str(Generic { value: "22" }));
-    map.insert(3, Union::UInt(Generic { value: 33 }));
+    println!("[main] insert 3 items -----------------------------------");
+    map.insert(1, Union::I32(Generic { value: 11 }));
+    map.insert(
+        2,
+        Union::STR(Generic {
+            value: String::from("22"),
+        }),
+    );
+    map.insert(3, Union::U32(Generic { value: 33 }));
     dump(&map);
 
-    println!("[main] clear all items");
-    map.clear();
+    println!("[main] get item: 1 --------------------------------------");
+    let uni = map.get(&2).unwrap();
+    dump(uni);
+    let v = uni.get();
+    dump(&v);
 
-    println!("[main] finish");
-    dump(&map);
+    println!("[main] get item: 2 --------------------------------------");
+    let uni = map.get(&2).unwrap();
+    dump(uni);
+    let v = uni.get();
+    dump(&v);
+
+    println!("[main] finish -------------------------------------------");
 }
