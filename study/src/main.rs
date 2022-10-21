@@ -1,42 +1,51 @@
-use std::alloc::Layout;
-use std::slice;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
+use std::fmt::Debug;
+use std::sync::Mutex;
 
-fn typename<T>(_: &T) -> String {
-    format!("{}", std::any::type_name::<T>())
+static MAP: Lazy<Mutex<HashMap<u32, Union>>> = Lazy::new(|| Mutex::new(HashMap::new()));
+
+fn dump<T: Debug>(value: &T) {
+    println!("[dump] {:?}", value);
+    println!("       as {}", std::any::type_name::<T>());
 }
 
-fn alloc<T>(length: usize)
+#[derive(Debug)]
+struct Generic<T>
 where
-    T: std::fmt::Debug,
+    T: Debug,
 {
-    let align = std::mem::align_of::<T>();
-    let unit = std::mem::size_of::<T>();
-    println!(
-        "  [alloc] length = {}, align = {}, unit = {}",
-        length, align, unit
-    );
+    value: T,
+}
 
-    let layout = Layout::from_size_align(length * unit, align).unwrap();
-    println!("  [alloc] layout = {:?}", layout);
+#[derive(Debug)]
+enum Union<'a> {
+    Int(Generic<i32>),
+    Str(Generic<&'a str>),
+    UInt(Generic<u32>),
+}
 
-    let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
-    println!("  [alloc] ptr = {:?}, is_null = {}", ptr, ptr.is_null());
-
-    let slice = unsafe { slice::from_raw_parts_mut(ptr as *mut T, length) };
-    println!("  [alloc] slice = {:?} as {}", &slice, typename(&slice));
-
-    unsafe {
-        std::alloc::dealloc(ptr, layout);
+impl<T> Drop for Generic<T>
+where
+    T: Debug,
+{
+    fn drop(&mut self) {
+        dump(self);
     }
 }
 
 fn main() {
-    println!("[main] call alloc<u16>(0)");
-    alloc::<u16>(0);
+    let mut map = MAP.lock().unwrap();
 
-    println!("[main] call alloc<u16>(8)");
-    alloc::<u16>(8);
+    println!("[main] insert 3 items");
+    map.insert(1, Union::Int(Generic { value: 11 }));
+    map.insert(2, Union::Str(Generic { value: "22" }));
+    map.insert(3, Union::UInt(Generic { value: 33 }));
+    dump(&map);
 
-    println!("[main] call alloc<u16>(MAX)");
-    alloc::<u16>(usize::MAX / std::mem::size_of::<u16>());
+    println!("[main] clear all items");
+    map.clear();
+
+    println!("[main] finish");
+    dump(&map);
 }
