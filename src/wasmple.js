@@ -52,7 +52,7 @@ export class Wasmple {
     }
 
     _get_string_buffer(ptr) {
-        const len = this.wasm.length(ptr);
+        const len = this.wasm.length_u16(ptr);
         const chars = new Uint16Array(this.wasm.memory.buffer, ptr, len);
         return String.fromCharCode(...chars);
     }
