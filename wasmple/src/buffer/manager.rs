@@ -31,22 +31,31 @@ impl BufferManager {
             Some(buf) => {
                 let ptr = buf.ptr();
                 self.ring.insert(ptr, Arc::new(Mutex::new(buf)));
-                console::debug(format!("[wasm] buffer::MANAGER {:?}", self));
+                console::debug(format!("[wasm] dump {:?}", self));
                 ptr
             }
         }
     }
 
-    pub fn buffer(&self, ptr: BufferPtr) -> Arc<Mutex<Buffer>> {
-        self.ring.get(&ptr).unwrap().clone()
+    pub fn get(&self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
+        Some(self.ring.get(&ptr)?.clone())
     }
 
     pub fn length<T>(&self, ptr: BufferPtr) -> usize {
-        self.buffer(ptr).lock().unwrap().length::<T>()
+        match self.get(ptr) {
+            None => 0,
+            Some(arc) => arc.lock().unwrap().length::<T>(),
+        }
     }
 
-    pub fn dealloc(&mut self, ptr: BufferPtr) {
-        self.ring.remove(&ptr);
-        console::debug(format!("[wasm] buffer::MANAGER {:?}", self));
+    pub fn dealloc(&mut self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
+        let removed = self.ring.remove(&ptr);
+        console::debug(format!("[wasm] dump {:?}", self));
+        removed
+    }
+
+    pub fn clear(&mut self) {
+        self.ring.clear();
+        console::debug(format!("[wasm] dump {:?}", self));
     }
 }

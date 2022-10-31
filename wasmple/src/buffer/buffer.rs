@@ -13,7 +13,7 @@ pub struct Buffer {
 }
 
 impl Buffer {
-    pub(super) fn alloc<T>(length: usize) -> Option<Buffer> {
+    pub(super) fn alloc<T>(length: usize) -> Option<Self> {
         let align = std::mem::align_of::<T>();
         let unit = std::mem::size_of::<T>();
         let length = length * unit;
@@ -22,7 +22,7 @@ impl Buffer {
 
         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
         console::debug(format!(
-            "[wasm] Buffer::alloc ptr={:?} layout={:?}",
+            "[wasm] Buffer::alloc ptr = {:?} layout = {:?}",
             ptr, layout
         ));
 
@@ -57,6 +57,6 @@ impl Buffer {
 impl Drop for Buffer {
     fn drop(&mut self) {
         unsafe { std::alloc::dealloc(self.ptr as *mut u8, self.layout) }
-        console::debug(format!("[wasm] dealloc ptr={:?}", self.ptr));
+        console::debug(format!("[wasm] dealloc ptr = {:?}", self.ptr));
     }
 }

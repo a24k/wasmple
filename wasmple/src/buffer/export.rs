@@ -13,5 +13,10 @@ pub extern "C" fn length_u16(ptr: BufferPtr) -> usize {
 
 #[no_mangle]
 pub extern "C" fn dealloc(ptr: BufferPtr) {
-    BufferManager::lock().dealloc(ptr)
+    BufferManager::lock().dealloc(ptr);
+}
+
+#[no_mangle]
+pub extern "C" fn clear() {
+    BufferManager::lock().clear();
 }

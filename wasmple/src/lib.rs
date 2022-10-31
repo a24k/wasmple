@@ -12,7 +12,7 @@ pub extern "C" fn init() -> bool {
 pub extern "C" fn reverse_string(input_ptr: BufferPtr) -> BufferPtr {
     let mut manager = BufferManager::lock();
 
-    let arc = manager.buffer(input_ptr);
+    let arc = manager.get(input_ptr).unwrap();
     let buf = arc.lock().unwrap();
     let slice = buf.slice::<u16>();
 
@@ -22,7 +22,7 @@ pub extern "C" fn reverse_string(input_ptr: BufferPtr) -> BufferPtr {
 
     let output_ptr = manager.alloc::<u16>(utf16.len());
 
-    let arc = manager.buffer(output_ptr);
+    let arc = manager.get(output_ptr).unwrap();
     let mut buf = arc.lock().unwrap();
     let slice = buf.slice_mut::<u16>();
     slice.copy_from_slice(&utf16[..]);
