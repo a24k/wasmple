@@ -4,7 +4,7 @@ use std::sync::{Arc, Mutex, MutexGuard};
 
 use crate::console;
 
-use super::buffer::{Buffer, BufferPtr};
+use super::{Buffer, BufferPtr};
 
 #[derive(Debug)]
 pub struct BufferManager {

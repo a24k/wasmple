@@ -1,5 +1,5 @@
-use super::buffer::BufferPtr;
-use super::manager::BufferManager;
+use super::BufferPtr;
+use super::BufferManager;
 
 #[no_mangle]
 pub extern "C" fn alloc_u16(len: usize) -> BufferPtr {
