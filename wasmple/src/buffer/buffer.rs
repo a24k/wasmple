@@ -14,6 +14,10 @@ pub struct Buffer {
 
 impl Buffer {
     pub(super) fn alloc<T>(length: usize) -> Option<Self> {
+        if length == 0 {
+            return None;
+        }
+
         let align = std::mem::align_of::<T>();
         let unit = std::mem::size_of::<T>();
         let length = length * unit;

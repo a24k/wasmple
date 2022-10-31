@@ -1,9 +1,12 @@
-use super::BufferPtr;
 use super::BufferManager;
+use super::BufferPtr;
 
 #[no_mangle]
 pub extern "C" fn alloc_u16(len: usize) -> BufferPtr {
-    BufferManager::lock().alloc::<u16>(len)
+    match BufferManager::lock().alloc::<u16>(len) {
+        None => 0,
+        Some(arc) => arc.lock().unwrap().ptr(),
+    }
 }
 
 #[no_mangle]

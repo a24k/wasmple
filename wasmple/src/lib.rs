@@ -1,7 +1,7 @@
 mod buffer;
 mod console;
 
-use buffer::{BufferPtr, BufferManager};
+use buffer::{BufferManager, BufferPtr};
 
 #[no_mangle]
 pub extern "C" fn init() -> bool {
@@ -12,20 +12,26 @@ pub extern "C" fn init() -> bool {
 pub extern "C" fn reverse_string(input_ptr: BufferPtr) -> BufferPtr {
     let mut manager = BufferManager::lock();
 
-    let arc = manager.get(input_ptr).unwrap();
-    let buf = arc.lock().unwrap();
-    let slice = buf.slice::<u16>();
+    match manager.get(input_ptr) {
+        None => 0,
+        Some(arc) => {
+            let buf = arc.lock().unwrap();
+            let slice = buf.slice::<u16>();
 
-    let input_str = String::from_utf16(slice).unwrap();
-    let output_str: String = input_str.chars().rev().collect();
-    let utf16: Vec<u16> = output_str.encode_utf16().collect();
+            let input_str = String::from_utf16(slice).unwrap();
+            let output_str: String = input_str.chars().rev().collect();
+            let utf16: Vec<u16> = output_str.encode_utf16().collect();
 
-    let output_ptr = manager.alloc::<u16>(utf16.len());
+            match manager.alloc::<u16>(utf16.len()) {
+                None => 0,
+                Some(arc) => {
+                    let mut buf = arc.lock().unwrap();
+                    let slice = buf.slice_mut::<u16>();
+                    slice.copy_from_slice(&utf16[..]);
 
-    let arc = manager.get(output_ptr).unwrap();
-    let mut buf = arc.lock().unwrap();
-    let slice = buf.slice_mut::<u16>();
-    slice.copy_from_slice(&utf16[..]);
-
-    output_ptr
+                    buf.ptr()
+                },
+            }
+        }
+    }
 }

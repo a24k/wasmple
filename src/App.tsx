@@ -11,7 +11,7 @@ const App: Component = () => {
     });
 
     const [message, setMessage] = createSignal("か🦀に は💓と え🦐び");
-    const reverseMessage = () => message().length == 0 ? "" : wasmple().reverse_string(message());
+    const reverseMessage = () => wasmple().reverse_string(message());
 
     return (
         <>

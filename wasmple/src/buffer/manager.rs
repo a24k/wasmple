@@ -24,17 +24,16 @@ impl BufferManager {
             .unwrap()
     }
 
-    pub fn alloc<T>(&mut self, length: usize) -> BufferPtr {
-        let buf = Buffer::alloc::<T>(length);
-        match buf {
-            None => 0,
-            Some(buf) => {
-                let ptr = buf.ptr();
-                self.ring.insert(ptr, Arc::new(Mutex::new(buf)));
-                console::debug(format!("[wasm] dump {:?}", self));
-                ptr
-            }
-        }
+    pub fn alloc<T>(&mut self, length: usize) -> Option<Arc<Mutex<Buffer>>> {
+        let buf = Buffer::alloc::<T>(length)?;
+
+        let ptr = buf.ptr();
+        let arc = Arc::new(Mutex::new(buf));
+
+        self.ring.insert(ptr, arc.clone());
+        console::debug(format!("[wasm] dump {:?}", self));
+
+        Some(arc)
     }
 
     pub fn get(&self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
@@ -51,6 +50,7 @@ impl BufferManager {
     pub fn dealloc(&mut self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
         let removed = self.ring.remove(&ptr);
         console::debug(format!("[wasm] dump {:?}", self));
+
         removed
     }
 
