@@ -42,9 +42,7 @@ impl BufferManager {
     }
 
     pub fn length<T>(&self, ptr: BufferPtr) -> usize {
-        let arc = self.buffer(ptr);
-        let buf = arc.lock().unwrap();
-        buf.length::<u16>()
+        self.buffer(ptr).lock().unwrap().length::<T>()
     }
 
     pub fn dealloc(&mut self, ptr: BufferPtr) {
