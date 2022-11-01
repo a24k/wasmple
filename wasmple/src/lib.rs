@@ -4,12 +4,7 @@ mod console;
 use buffer::{BufferManager, BufferPtr};
 
 #[no_mangle]
-pub extern "C" fn init() -> bool {
-    console::init()
-}
-
-#[no_mangle]
-pub extern "C" fn reverse_string(input_ptr: BufferPtr) -> BufferPtr {
+pub extern "C" fn revstr(input_ptr: BufferPtr) -> BufferPtr {
     let mut manager = BufferManager::lock();
 
     match manager.get(input_ptr) {

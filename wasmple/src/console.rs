@@ -6,7 +6,8 @@ extern "C" {
     fn console_message(level: u8, ptr: *const u16, len: usize);
 }
 
-pub fn init() -> bool {
+#[no_mangle]
+pub extern "C" fn console_set_panic_hook() -> bool {
     static ONCE: Once = Once::new();
     ONCE.call_once(|| {
         fn panic_hook(info: &panic::PanicInfo) {

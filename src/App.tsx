@@ -1,11 +1,11 @@
 import { createSignal, createResource, Show } from 'solid-js';
 import type { Component } from 'solid-js';
 
-import { Wasmple } from './wasmple';
+import { Wasmple } from './wasm/wasmple';
 
 const App: Component = () => {
     const [wasmple] = createResource(async () => {
-        const wasmple = await Wasmple.prelude();
+        const wasmple = await Wasmple.init();
         await new Promise((r) => setTimeout(r, 1000));
         return wasmple;
     });
