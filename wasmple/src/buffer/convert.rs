@@ -14,9 +14,9 @@ where
     T::from(ptr)
 }
 
-pub fn from<T>(obj: T) -> BufferPtr
+pub fn from<T>(obj: T) -> Option<BufferPtr>
 where
     T: BufferConverter<T>,
 {
-    T::into(&obj).unwrap_or(0)
+    T::into(&obj)
 }

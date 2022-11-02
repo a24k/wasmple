@@ -46,10 +46,7 @@ pub extern "C" fn buffer_alloc(t: u8, len: usize) -> BufferPtr {
         T::F32 => BufferManager::lock().alloc::<f32>(len),
         T::F64 => BufferManager::lock().alloc::<f64>(len),
     };
-    match arc {
-        None => 0,
-        Some(arc) => arc.lock().unwrap().ptr(),
-    }
+    arc.map_or(0, |arc| arc.lock().unwrap().ptr())
 }
 
 #[no_mangle]

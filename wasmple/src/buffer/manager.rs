@@ -41,10 +41,8 @@ impl BufferManager {
     }
 
     pub fn length<T>(&self, ptr: BufferPtr) -> usize {
-        match self.get(ptr) {
-            None => 0,
-            Some(arc) => arc.lock().unwrap().length::<T>(),
-        }
+        self.get(ptr)
+            .map_or(0, |arc| arc.lock().unwrap().length::<T>())
     }
 
     pub fn dealloc(&mut self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
