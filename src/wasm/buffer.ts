@@ -13,8 +13,6 @@ export enum Type {
 
 export type BufferPtr = number;
 
-export type TypedArray = Int8Array | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | BigInt64Array | BigUint64Array | Float32Array | Float64Array;
-
 type FnAlloc = (t: Type, len: number) => number;
 type FnLength = (t: Type, ptr: BufferPtr) => number;
 type FnDealloc = (ptr: BufferPtr) => void;
@@ -38,39 +36,45 @@ export class WasmBuffer {
         this.clear = wasm.buffer_clear as FnClear;
     }
 
-    public slice(t: Type, ptr: BufferPtr): TypedArray {
-        switch (t) {
-            case Type.I8:
-                return new Int8Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.U8:
-                return new Uint8Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.I16:
-                return new Int16Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.U16:
-                return new Uint16Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.I32:
-                return new Int32Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.U32:
-                return new Uint32Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.I64:
-                return new BigInt64Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.U64:
-                return new BigUint64Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.F32:
-                return new Float32Array(this.memory.buffer, ptr, this.length(t, ptr));
-            case Type.F64:
-                return new Float64Array(this.memory.buffer, ptr, this.length(t, ptr));
-            default:
-                return new Uint8Array(this.memory.buffer, ptr, this.length(t, ptr));
-        }
-    }
+    public slice = {
+        i8: (ptr: BufferPtr): Int8Array => {
+            return new Int8Array(this.memory.buffer, ptr, this.length(Type.I8, ptr));
+        },
+        u8: (ptr: BufferPtr): Uint8Array => {
+            return new Uint8Array(this.memory.buffer, ptr, this.length(Type.U8, ptr));
+        },
+        i16: (ptr: BufferPtr): Int16Array => {
+            return new Int16Array(this.memory.buffer, ptr, this.length(Type.I16, ptr));
+        },
+        u16: (ptr: BufferPtr): Uint16Array => {
+            return new Uint16Array(this.memory.buffer, ptr, this.length(Type.U16, ptr));
+        },
+        i32: (ptr: BufferPtr): Int32Array => {
+            return new Int32Array(this.memory.buffer, ptr, this.length(Type.I32, ptr));
+        },
+        u32: (ptr: BufferPtr): Uint32Array => {
+            return new Uint32Array(this.memory.buffer, ptr, this.length(Type.U32, ptr));
+        },
+        i64: (ptr: BufferPtr): BigInt64Array => {
+            return new BigInt64Array(this.memory.buffer, ptr, this.length(Type.I64, ptr));
+        },
+        u64: (ptr: BufferPtr): BigUint64Array => {
+            return new BigUint64Array(this.memory.buffer, ptr, this.length(Type.U64, ptr));
+        },
+        f32: (ptr: BufferPtr): Float32Array => {
+            return new Float32Array(this.memory.buffer, ptr, this.length(Type.F32, ptr));
+        },
+        f64: (ptr: BufferPtr): Float64Array => {
+            return new Float64Array(this.memory.buffer, ptr, this.length(Type.F64, ptr));
+        },
+    };
 
     public from = {
         string: (str: string): BufferPtr => {
             const len = str.length; // number of UTF-16 code units
             const ptr = this.alloc(Type.U16, len);
 
-            const buf = this.slice(Type.U16, ptr) as Uint16Array;
+            const buf = this.slice.u16(ptr);
             for (let i = 0; i < len; ++i) { buf[i] = str.charCodeAt(i); }
 
             return ptr;
@@ -79,9 +83,9 @@ export class WasmBuffer {
 
     public to = {
         string: (ptr: BufferPtr): string => {
-            const chars = this.slice(Type.U16, ptr) as Uint16Array;
+            const chars = this.slice.u16(ptr);
             return String.fromCharCode(...chars);
-        }
+        },
     };
 
 }
