@@ -32,11 +32,11 @@ export class Wasmple {
     }
 
     reverse_string(input: string): string {
-        const input_ptr = this.buffer.put_string(input);
+        const input_ptr = this.buffer.from.string(input);
 
         const output_ptr = this.revstr(input_ptr);
 
-        const output = this.buffer.get_string(output_ptr);
+        const output = this.buffer.to.string(output_ptr);
 
         this.buffer.dealloc(input_ptr);
         this.buffer.dealloc(output_ptr);

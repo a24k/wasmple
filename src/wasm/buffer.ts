@@ -65,19 +65,23 @@ export class WasmBuffer {
         }
     }
 
-    put_string(str: string): BufferPtr {
-        const len = str.length; // number of UTF-16 code units
-        const ptr = this.alloc(Type.U16, len);
+    public from = {
+        string: (str: string): BufferPtr => {
+            const len = str.length; // number of UTF-16 code units
+            const ptr = this.alloc(Type.U16, len);
 
-        const buf = this.slice(Type.U16, ptr) as Uint16Array;
-        for (let i = 0; i < len; ++i) { buf[i] = str.charCodeAt(i); }
+            const buf = this.slice(Type.U16, ptr) as Uint16Array;
+            for (let i = 0; i < len; ++i) { buf[i] = str.charCodeAt(i); }
 
-        return ptr;
-    }
+            return ptr;
+        },
+    };
 
-    get_string(ptr: BufferPtr): string {
-        const chars = this.slice(Type.U16, ptr) as Uint16Array;
-        return String.fromCharCode(...chars);
-    }
+    public to = {
+        string: (ptr: BufferPtr): string => {
+            const chars = this.slice(Type.U16, ptr) as Uint16Array;
+            return String.fromCharCode(...chars);
+        }
+    };
 
 }
