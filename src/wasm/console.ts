@@ -8,7 +8,7 @@ enum LogLevel {
 
 type FnSetPanicHook = () => boolean;
 
-export class Console {
+export class WasmConsole {
 
     private memory?: WebAssembly.Memory;
 

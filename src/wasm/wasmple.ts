@@ -1,6 +1,6 @@
 import wasmurl from '../../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?url';
 
-import { Console } from './console';
+import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
 
 type FnRevstr = (ptr: number) => number;
@@ -10,7 +10,7 @@ export class Wasmple {
     public static async init(): Promise<Wasmple> {
         const wasmbin = await (await fetch(wasmurl)).arrayBuffer();
 
-        const console = new Console();
+        const console = new WasmConsole();
 
         const imports = {
             console: console.imports,
