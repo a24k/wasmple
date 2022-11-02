@@ -1,7 +1,7 @@
 import wasmurl from '../../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?url';
 
 import { Console } from './console';
-import { Buffer } from './buffer';
+import { WasmBuffer } from './buffer';
 
 type FnRevstr = (ptr: number) => number;
 
@@ -23,11 +23,11 @@ export class Wasmple {
         return new Wasmple(wasm);
     }
 
-    private buffer: Buffer;
+    private buffer: WasmBuffer;
     private revstr: FnRevstr;
 
     constructor(wasm: WebAssembly.Exports) {
-        this.buffer = new Buffer(wasm);
+        this.buffer = new WasmBuffer(wasm);
         this.revstr = wasm.revstr as FnRevstr;
     }
 
