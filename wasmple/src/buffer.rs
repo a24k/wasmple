@@ -1,4 +1,5 @@
 mod buffer;
+pub mod convert;
 mod export;
 mod manager;
 
