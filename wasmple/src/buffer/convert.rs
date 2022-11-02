@@ -2,22 +2,21 @@ mod string;
 
 use super::{BufferManager, BufferPtr};
 
-pub mod into {
-    use super::BufferPtr;
-
-    use super::string;
-
-    pub fn string(ptr: BufferPtr) -> Option<String> {
-        string::from(ptr)
-    }
+pub trait BufferConverter<T> {
+    fn from(ptr: BufferPtr) -> Option<T>;
+    fn into(&self) -> Option<BufferPtr>;
 }
 
-pub mod from {
-    use super::BufferPtr;
+pub fn into<T>(ptr: BufferPtr) -> Option<T>
+where
+    T: BufferConverter<T>,
+{
+    T::from(ptr)
+}
 
-    use super::string;
-
-    pub fn string(str: String) -> BufferPtr {
-        string::into(str)
-    }
+pub fn from<T>(obj: T) -> BufferPtr
+where
+    T: BufferConverter<T>,
+{
+    T::into(&obj).unwrap_or(0)
 }
