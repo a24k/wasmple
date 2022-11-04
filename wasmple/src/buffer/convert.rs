@@ -1,3 +1,4 @@
+mod json;
 mod string;
 
 use super::{BufferManager, BufferPtr};

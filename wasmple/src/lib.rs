@@ -12,7 +12,7 @@ pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
 }
 
 fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
-    let input_json: Value = serde_json::from_str(&buffer::into::<String>(input_ptr)?).ok()?;
+    let input_json: Value = buffer::into(input_ptr)?;
 
     let input_str_a = input_json["a"].clone();
     let input_str_b = input_json["b"].clone();
@@ -29,7 +29,7 @@ fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
             let output_json =
                 serde_json::json!({"interleaved": interleaved_str, "reversed": reversed_str});
 
-            buffer::from(serde_json::to_string(&output_json).ok()?)
+            buffer::from(output_json)
         }
         _ => None,
     }

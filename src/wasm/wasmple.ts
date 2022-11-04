@@ -4,9 +4,7 @@ import type { BufferPtr } from './buffer';
 import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
 
-type FnInterleave = (ptr_a: BufferPtr, ptr_b: BufferPtr) => BufferPtr;
 type FnConvert = (ptr: BufferPtr) => BufferPtr;
-type FnReverse = (ptr: BufferPtr) => BufferPtr;
 
 export type FnConvertResult = { interleaved: string, reversed: string };
 
