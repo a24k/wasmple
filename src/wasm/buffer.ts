@@ -79,12 +79,18 @@ export class WasmBuffer {
 
             return ptr;
         },
+        object: (obj: object): BufferPtr => {
+            return this.from.string(JSON.stringify(obj));
+        },
     };
 
     public to = {
         string: (ptr: BufferPtr): string => {
             const chars = this.slice.u16(ptr);
             return String.fromCharCode(...chars);
+        },
+        object: (ptr: BufferPtr): object => {
+            return JSON.parse(this.to.string(ptr));
         },
     };
 

@@ -5,7 +5,10 @@ import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
 
 type FnInterleave = (ptr_a: BufferPtr, ptr_b: BufferPtr) => BufferPtr;
+type FnConvert = (ptr: BufferPtr) => BufferPtr;
 type FnReverse = (ptr: BufferPtr) => BufferPtr;
+
+export type FnConvertResult = { interleaved: string, reversed: string };
 
 export class Wasmple {
 
@@ -26,39 +29,26 @@ export class Wasmple {
     }
 
     private buffer: WasmBuffer;
-    private interleave: FnInterleave;
-    private reverse: FnReverse;
+    private convert: FnConvert;
 
     constructor(wasm: WebAssembly.Exports) {
         this.buffer = new WasmBuffer(wasm);
-        this.interleave = wasm.interleave as FnInterleave;
-        this.reverse = wasm.reverse as FnReverse;
+        this.convert = wasm.convert as FnConvert;
     }
 
-    interleave_string(inputA: string, inputB: string): string {
-        const inputPtrA = this.buffer.from.string(inputA);
-        const inputPtrB = this.buffer.from.string(inputB);
+    convert_string(inputA: string, inputB: string): FnConvertResult {
+        const inputJsonPtr = this.buffer.from.object({
+            a: inputA,
+            b: inputB,
+        });
 
-        const outputPtr = this.interleave(inputPtrA, inputPtrB);
-        const output = this.buffer.to.string(outputPtr);
+        const outputJsonPtr = this.convert(inputJsonPtr);
+        const outputJson = this.buffer.to.object(outputJsonPtr) as FnConvertResult;
 
-        this.buffer.dealloc(inputPtrA);
-        this.buffer.dealloc(inputPtrB);
-        this.buffer.dealloc(outputPtr);
+        this.buffer.dealloc(inputJsonPtr);
+        this.buffer.dealloc(outputJsonPtr);
 
-        return output;
-    }
-
-    reverse_string(input: string): string {
-        const inputPtr = this.buffer.from.string(input);
-
-        const outputPtr = this.reverse(inputPtr);
-        const output = this.buffer.to.string(outputPtr);
-
-        this.buffer.dealloc(inputPtr);
-        this.buffer.dealloc(outputPtr);
-
-        return output;
+        return outputJson;
     }
 
 }

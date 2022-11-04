@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js';
 import { createSignal, createMemo } from 'solid-js';
 
+import type { FnConvertResult } from '../wasm/wasmple';
 import { Wasmple } from '../wasm/wasmple';
 
 export const Main: Component<{
@@ -8,11 +9,10 @@ export const Main: Component<{
 }> = (props) => {
     const [inputA, setInputA] = createSignal("パトカー🚔");
     const [inputB, setInputB] = createSignal("タクシー🚖");
-    const interleaved = createMemo(() =>
-        props.wasmple === undefined ? "" : props.wasmple.interleave_string(inputA(), inputB())
-    );
-    const reversed = createMemo(() =>
-        props.wasmple === undefined ? "" : props.wasmple.reverse_string(interleaved())
+    const converted = createMemo<FnConvertResult>(() =>
+        props.wasmple === undefined
+            ? { interleaved: "", reversed: "" } as FnConvertResult
+            : props.wasmple.convert_string(inputA(), inputB())
     );
 
     return (
@@ -31,13 +31,13 @@ export const Main: Component<{
             </div>
             <div>
                 <label for="output-interleaved" class="block mb-1 text-md">output (interleaved)</label>
-                <input id="output-interleaved" type="text" value={interleaved()} disabled
+                <input id="output-interleaved" type="text" value={converted().interleaved} disabled
                     class="block w-96 p-2 bg-zinc-700 border-none rounded-md text-xl text-center"
                 />
             </div>
             <div>
                 <label for="output-reversed" class="block mb-1 text-md">output (reversed)</label>
-                <input id="output-reversed" type="text" value={reversed()} disabled
+                <input id="output-reversed" type="text" value={converted().reversed} disabled
                     class="block w-96 p-2 bg-zinc-700 border-none rounded-md text-xl text-center"
                 />
             </div>
