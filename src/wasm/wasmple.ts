@@ -3,7 +3,8 @@ import wasmurl from '../../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?ur
 import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
 
-type FnRevstr = (ptr: number) => number;
+type FnInterleave = (ptr_a: number, ptr_b: number) => number;
+type FnReverse = (ptr: number) => number;
 
 export class Wasmple {
 
@@ -24,22 +25,37 @@ export class Wasmple {
     }
 
     private buffer: WasmBuffer;
-    private revstr: FnRevstr;
+    private interleave: FnInterleave;
+    private reverse: FnReverse;
 
     constructor(wasm: WebAssembly.Exports) {
         this.buffer = new WasmBuffer(wasm);
-        this.revstr = wasm.revstr as FnRevstr;
+        this.interleave = wasm.interleave as FnInterleave;
+        this.reverse = wasm.reverse as FnReverse;
+    }
+
+    interleave_string(inputA: string, inputB: string): string {
+        const inputPtrA = this.buffer.from.string(inputA);
+        const inputPtrB = this.buffer.from.string(inputB);
+
+        const outputPtr = this.interleave(inputPtrA, inputPtrB);
+        const output = this.buffer.to.string(outputPtr);
+
+        this.buffer.dealloc(inputPtrA);
+        this.buffer.dealloc(inputPtrB);
+        this.buffer.dealloc(outputPtr);
+
+        return output;
     }
 
     reverse_string(input: string): string {
-        const input_ptr = this.buffer.from.string(input);
+        const inputPtr = this.buffer.from.string(input);
 
-        const output_ptr = this.revstr(input_ptr);
+        const outputPtr = this.reverse(inputPtr);
+        const output = this.buffer.to.string(outputPtr);
 
-        const output = this.buffer.to.string(output_ptr);
-
-        this.buffer.dealloc(input_ptr);
-        this.buffer.dealloc(output_ptr);
+        this.buffer.dealloc(inputPtr);
+        this.buffer.dealloc(outputPtr);
 
         return output;
     }
