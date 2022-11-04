@@ -2,9 +2,22 @@ mod buffer;
 mod console;
 
 use itertools::Itertools;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use buffer::BufferPtr;
+
+#[derive(Deserialize)]
+struct FnConvertParameters {
+    a: String,
+    b: String,
+}
+
+#[derive(Serialize)]
+struct FnConvertReturns {
+    interleaved: String,
+    reversed: String,
+}
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
@@ -13,24 +26,17 @@ pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
 
 fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
     let input_json: Value = buffer::into(input_ptr)?;
+    let input: FnConvertParameters = serde_json::from_value(input_json).ok()?;
 
-    let input_str_a = input_json["a"].clone();
-    let input_str_b = input_json["b"].clone();
+    let interleaved: String = input.a.chars().interleave(input.b.chars()).collect();
 
-    match (input_str_a, input_str_b) {
-        (Value::String(input_str_a), Value::String(input_str_b)) => {
-            let interleaved_str: String = input_str_a
-                .chars()
-                .interleave(input_str_b.chars())
-                .collect();
+    let reversed: String = interleaved.chars().rev().collect();
 
-            let reversed_str: String = interleaved_str.chars().rev().collect();
+    let output = FnConvertReturns {
+        interleaved,
+        reversed,
+    };
 
-            let output_json =
-                serde_json::json!({"interleaved": interleaved_str, "reversed": reversed_str});
-
-            buffer::from(output_json)
-        }
-        _ => None,
-    }
+    let output_json = serde_json::to_value(output).ok()?;
+    buffer::from(output_json)
 }
