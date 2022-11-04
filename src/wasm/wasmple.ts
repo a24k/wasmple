@@ -1,10 +1,11 @@
 import wasmurl from '../../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?url';
 
+import type { BufferPtr } from './buffer';
 import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
 
-type FnInterleave = (ptr_a: number, ptr_b: number) => number;
-type FnReverse = (ptr: number) => number;
+type FnInterleave = (ptr_a: BufferPtr, ptr_b: BufferPtr) => BufferPtr;
+type FnReverse = (ptr: BufferPtr) => BufferPtr;
 
 export class Wasmple {
 
