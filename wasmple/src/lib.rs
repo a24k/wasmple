@@ -3,9 +3,8 @@ mod console;
 
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
-use buffer::BufferPtr;
+use buffer::{BufferConverter, BufferPtr};
 
 #[derive(Deserialize)]
 struct FnConvertParameters {
@@ -19,14 +18,33 @@ struct FnConvertReturns {
     reversed: String,
 }
 
+impl BufferConverter<FnConvertParameters> for FnConvertParameters {
+    fn from(ptr: BufferPtr) -> Option<FnConvertParameters> {
+        serde_json::from_str(&buffer::into::<String>(ptr)?).ok()
+    }
+
+    fn into(&self) -> Option<BufferPtr> {
+        None
+    }
+}
+
+impl BufferConverter<FnConvertReturns> for FnConvertReturns {
+    fn from(_ptr: BufferPtr) -> Option<FnConvertReturns> {
+        None
+    }
+
+    fn into(&self) -> Option<BufferPtr> {
+        buffer::from(serde_json::to_string(self).ok()?)
+    }
+}
+
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
     _convert(input_ptr).unwrap_or(0)
 }
 
 fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
-    let input_json: Value = buffer::into(input_ptr)?;
-    let input: FnConvertParameters = serde_json::from_value(input_json).ok()?;
+    let input: FnConvertParameters = buffer::into(input_ptr)?;
 
     let interleaved: String = input.a.chars().interleave(input.b.chars()).collect();
 
@@ -37,6 +55,5 @@ fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
         reversed,
     };
 
-    let output_json = serde_json::to_value(output).ok()?;
-    buffer::from(output_json)
+    buffer::from(output)
 }
