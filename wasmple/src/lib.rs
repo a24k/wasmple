@@ -2,41 +2,26 @@ mod buffer;
 mod console;
 
 use itertools::Itertools;
+
 use serde::{Deserialize, Serialize};
 
-use buffer::{BufferConverter, BufferPtr};
+use buffer::convert::JsonConvertee;
+use buffer::BufferPtr;
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct FnConvertParameters {
     a: String,
     b: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct FnConvertReturns {
     interleaved: String,
     reversed: String,
 }
 
-impl BufferConverter<FnConvertParameters> for FnConvertParameters {
-    fn from(ptr: BufferPtr) -> Option<FnConvertParameters> {
-        serde_json::from_str(&buffer::into::<String>(ptr)?).ok()
-    }
-
-    fn into(&self) -> Option<BufferPtr> {
-        None
-    }
-}
-
-impl BufferConverter<FnConvertReturns> for FnConvertReturns {
-    fn from(_ptr: BufferPtr) -> Option<FnConvertReturns> {
-        None
-    }
-
-    fn into(&self) -> Option<BufferPtr> {
-        buffer::from(serde_json::to_string(self).ok()?)
-    }
-}
+impl JsonConvertee for FnConvertParameters {}
+impl JsonConvertee for FnConvertReturns {}
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {

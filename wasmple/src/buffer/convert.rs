@@ -1,6 +1,8 @@
 mod json;
 mod string;
 
+pub use json::JsonConvertee;
+
 use super::{BufferManager, BufferPtr};
 
 pub trait BufferConverter<T> {

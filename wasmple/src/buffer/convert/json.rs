@@ -1,9 +1,14 @@
-use serde_json::Value;
-
 use super::{BufferConverter, BufferPtr};
 
-impl BufferConverter<Value> for Value {
-    fn from(ptr: BufferPtr) -> Option<Value> {
+pub trait JsonConvertee: serde::Serialize + serde::de::DeserializeOwned {}
+
+impl JsonConvertee for serde_json::Value {}
+
+impl<T> BufferConverter<T> for T
+where
+    T: JsonConvertee,
+{
+    fn from(ptr: BufferPtr) -> Option<T> {
         serde_json::from_str(&super::into::<String>(ptr)?).ok()
     }
 

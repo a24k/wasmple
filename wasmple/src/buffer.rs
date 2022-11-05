@@ -1,8 +1,9 @@
-mod buffer;
-mod convert;
+pub mod buffer;
+pub mod convert;
+pub mod manager;
+
 mod export;
-mod manager;
 
 pub use buffer::{Buffer, BufferPtr};
-pub use convert::{from, into, BufferConverter};
+pub use convert::{from, into};
 pub use manager::BufferManager;
