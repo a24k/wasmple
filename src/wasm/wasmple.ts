@@ -6,7 +6,8 @@ import { WasmBuffer } from './buffer';
 
 type FnConvert = (ptr: BufferPtr) => BufferPtr;
 
-export type FnConvertResult = { interleaved: string, reversed: string };
+export type FnConvertParameters = { a: string, b: string };
+export type FnConvertReturns = { interleaved: string, reversed: string };
 
 export class Wasmple {
 
@@ -34,14 +35,11 @@ export class Wasmple {
         this.convert = wasm.convert as FnConvert;
     }
 
-    convert_string(inputA: string, inputB: string): FnConvertResult {
-        const inputJsonPtr = this.buffer.from.object({
-            a: inputA,
-            b: inputB,
-        });
+    convert_string(params: FnConvertParameters): FnConvertReturns {
+        const inputJsonPtr = this.buffer.from.object(params);
 
         const outputJsonPtr = this.convert(inputJsonPtr);
-        const outputJson = this.buffer.to.object(outputJsonPtr) as FnConvertResult;
+        const outputJson = this.buffer.to.object(outputJsonPtr) as FnConvertReturns;
 
         this.buffer.dealloc(inputJsonPtr);
         this.buffer.dealloc(outputJsonPtr);

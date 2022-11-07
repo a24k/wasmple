@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
 import { createSignal, createMemo } from 'solid-js';
 
-import type { FnConvertResult } from '../wasm/wasmple';
+import type { FnConvertParameters, FnConvertReturns } from '../wasm/wasmple';
 import { Wasmple } from '../wasm/wasmple';
 
 export const Main: Component<{
@@ -9,10 +9,11 @@ export const Main: Component<{
 }> = (props) => {
     const [inputA, setInputA] = createSignal("パトカー🚔");
     const [inputB, setInputB] = createSignal("タクシー🚖");
-    const converted = createMemo<FnConvertResult>(() =>
+
+    const converted = createMemo<FnConvertReturns>(() =>
         props.wasmple === undefined
-            ? { interleaved: "", reversed: "" } as FnConvertResult
-            : props.wasmple.convert_string(inputA(), inputB())
+            ? { interleaved: "", reversed: "" } as FnConvertReturns
+            : props.wasmple.convert_string({ a: inputA(), b: inputB() } as FnConvertParameters)
     );
 
     return (
