@@ -8,7 +8,6 @@ pub type BufferPtr = usize;
 #[derive(Debug)]
 pub struct Buffer {
     ptr: BufferPtr,
-    length: usize,
     layout: Layout,
 }
 
@@ -20,9 +19,8 @@ impl Buffer {
 
         let align = std::mem::align_of::<T>();
         let unit = std::mem::size_of::<T>();
-        let length = length * unit;
 
-        let layout = Layout::from_size_align(length, align).ok()?;
+        let layout = Layout::from_size_align(length * unit, align).ok()?;
 
         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
         console::debug(format!(
@@ -34,7 +32,6 @@ impl Buffer {
             true => None,
             false => Some(Self {
                 ptr: ptr as BufferPtr,
-                length,
                 layout,
             }),
         }
@@ -46,7 +43,7 @@ impl Buffer {
 
     pub fn length<T>(&self) -> usize {
         let unit = std::mem::size_of::<T>();
-        self.length / unit
+        self.layout.size() / unit
     }
 
     pub fn slice<T>(&self) -> &[T] {
