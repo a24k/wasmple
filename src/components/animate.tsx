@@ -4,10 +4,14 @@ export const Fader: ParentComponent<{
     visible: boolean,
     class?: string,
 }> = (props) => {
+    let initial = props.visible;
+
     return (
         <div {...props} classList={{
-            "animate-fadeIn animate-faster": props.visible,
-            "animate-fadeOut animate-faster": !props.visible,
+            "opacity-100": initial && props.visible,
+            "animate-fadeOut animate-faster": initial && !props.visible,
+            "opacity-0": !initial && !props.visible,
+            "animate-fadeIn animate-faster": !initial && props.visible,
         }}>
             {props.children}
         </div>
