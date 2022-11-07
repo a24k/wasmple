@@ -4,7 +4,8 @@ export const Fader: ParentComponent<{
     visible: boolean,
     class?: string,
 }> = (props) => {
-    let initial = props.visible;
+    // eslint-disable-next-line
+    const initial = props.visible; // hold initial value with no reactiveness
 
     return (
         <div {...props} classList={{
