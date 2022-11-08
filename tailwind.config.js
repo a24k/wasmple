@@ -21,5 +21,7 @@ module.exports = withAnimation({
             },
         },
     },
-    plugins: [],
+    plugins: [
+        require("@tailwindcss/forms"),
+    ],
 });
