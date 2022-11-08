@@ -28,3 +28,6 @@
 
 [Zenn](https://zenn.dev/a24k/articles/20221012-wasmple-simple-console) / [Source](https://github.com/a24k/wasmple/tree/cc39624167b4f2f1b46804094de3f72f9bceebcd) / [Demo](https://dcd81fa3.wasmple.pages.dev/)
 
+## passing-buffer
+
+[Zenn](https://zenn.dev/a24k/articles/20221107-wasmple-passing-buffer) / [Source](https://github.com/a24k/wasmple/tree/2e718be5e94ad20c467bebecb1cc74bba586f01a) / [Demo](https://3e0b97e8.wasmple.pages.dev/)
