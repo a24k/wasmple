@@ -1,34 +1,34 @@
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! console_log {
-    ($str:expr) => { $crate::console::log($str) };
-    ($($arg:tt)*) => { $crate::console::log(format!($($arg)*)) };
+    ($fmt:expr) => { $crate::console::log($fmt.into()) };
+    ($fmt:expr, $($arg:tt)*) => { $crate::console::log(format!($fmt, $($arg)*)) };
 }
 
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! console_debug {
-    ($str:expr) => { $crate::console::debug($str) };
-    ($($arg:tt)*) => { $crate::console::debug(format!($($arg)*)) };
+    ($fmt:expr) => { $crate::console::debug($fmt.into()) };
+    ($fmt:expr, $($arg:tt)*) => { $crate::console::debug(format!($fmt, $($arg)*)) };
 }
 
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! console_info {
-    ($str:expr) => { $crate::console::info($str) };
-    ($($arg:tt)*) => { $crate::console::info(format!($($arg)*)) };
+    ($fmt:expr) => { $crate::console::info($fmt.into()) };
+    ($fmt:expr, $($arg:tt)*) => { $crate::console::info(format!($fmt, $($arg)*)) };
 }
 
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! console_warn {
-    ($str:expr) => { $crate::console::warn($str) };
-    ($($arg:tt)*) => { $crate::console::warn(format!($($arg)*)) };
+    ($fmt:expr) => { $crate::console::error($fmt.warn()) };
+    ($fmt:expr, $($arg:tt)*) => { $crate::console::warn(format!($fmt, $($arg)*)) };
 }
 
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! console_error {
-    ($str:expr) => { $crate::console::error($str) };
-    ($($arg:tt)*) => { $crate::console::error(format!($($arg)*)) };
+    ($fmt:expr) => { $crate::console::error($fmt.into()) };
+    ($fmt:expr, $($arg:tt)*) => { $crate::console::error(format!($fmt, $($arg)*)) };
 }

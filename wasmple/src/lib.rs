@@ -25,6 +25,7 @@ impl JsonConvertee for FnConvertReturns {}
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
+    console_log!("[wasm] convert");
     _convert(input_ptr).unwrap_or(0)
 }
 
