@@ -1,7 +1,7 @@
 use std::alloc::Layout;
 use std::fmt::Debug;
 
-use crate::console;
+use crate::console_debug;
 
 pub type BufferPtr = usize;
 
@@ -23,10 +23,11 @@ impl Buffer {
         let layout = Layout::from_size_align(length * unit, align).ok()?;
 
         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
-        console::debug(format!(
+        console_debug!(
             "[wasm] Buffer::alloc ptr = {} layout = {:?}",
-            ptr as usize, layout
-        ));
+            ptr as usize,
+            layout
+        );
 
         match ptr.is_null() {
             true => None,
@@ -58,6 +59,6 @@ impl Buffer {
 impl Drop for Buffer {
     fn drop(&mut self) {
         unsafe { std::alloc::dealloc(self.ptr as *mut u8, self.layout) }
-        console::debug(format!("[wasm] dealloc ptr = {}", self.ptr));
+        console_debug!("[wasm] dealloc ptr = {}", self.ptr);
     }
 }

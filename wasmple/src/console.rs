@@ -1,5 +1,6 @@
 mod console;
+mod define;
 mod export;
 mod import;
 
-pub use console::{log, debug, info, warn, error};
+pub use console::{debug, error, info, log, warn};
