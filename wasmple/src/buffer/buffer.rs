@@ -24,8 +24,8 @@ impl Buffer {
 
         let ptr = unsafe { std::alloc::alloc_zeroed(layout) };
         console::debug(format!(
-            "[wasm] Buffer::alloc ptr = {:?} layout = {:?}",
-            ptr, layout
+            "[wasm] Buffer::alloc ptr = {} layout = {:?}",
+            ptr as usize, layout
         ));
 
         match ptr.is_null() {
@@ -58,6 +58,6 @@ impl Buffer {
 impl Drop for Buffer {
     fn drop(&mut self) {
         unsafe { std::alloc::dealloc(self.ptr as *mut u8, self.layout) }
-        console::debug(format!("[wasm] dealloc ptr = {:?}", self.ptr));
+        console::debug(format!("[wasm] dealloc ptr = {}", self.ptr));
     }
 }
