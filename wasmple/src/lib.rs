@@ -1,9 +1,10 @@
 mod buffer;
-mod console;
 
 use itertools::Itertools;
 
 use serde::{Deserialize, Serialize};
+
+use wasmple_console as console;
 
 use buffer::convert::JsonConvertee;
 use buffer::BufferPtr;
@@ -25,7 +26,7 @@ impl JsonConvertee for FnConvertReturns {}
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
-    console_log!("[wasm] convert");
+    console::log!("[wasm] convert");
     _convert(input_ptr).unwrap_or(0)
 }
 
