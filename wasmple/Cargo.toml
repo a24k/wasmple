@@ -1,15 +1,11 @@
 [package]
 name = "wasmple"
 description = "a sample project for WebAssembly with Rust & SolidJS."
-version = "0.3.1"
+version = "0.3.2"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-
-[profile.release]
-opt-level = "z"
-lto = true
 
 [dependencies]
 itertools = "0.10.5"

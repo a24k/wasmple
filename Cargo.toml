@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "wasmple",
+    "wasmple_buffer",
+    "wasmple_console",
+]
+
+[profile.release]
+opt-level = "z"
+lto = true
