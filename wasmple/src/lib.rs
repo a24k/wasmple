@@ -7,20 +7,17 @@ use wasmple_console::info;
 use wasmple_buffer::convert::JsonConvertee;
 use wasmple_buffer::BufferPtr;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonConvertee)]
 struct FnConvertParameters {
     a: String,
     b: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonConvertee)]
 struct FnConvertReturns {
     interleaved: String,
     reversed: String,
 }
-
-impl JsonConvertee for FnConvertParameters {}
-impl JsonConvertee for FnConvertReturns {}
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
