@@ -2,7 +2,7 @@ use once_cell::sync::OnceCell;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex, MutexGuard};
 
-use wasmple_console as console;
+use wasmple_console::debug;
 
 use super::{Buffer, BufferPtr};
 
@@ -31,7 +31,7 @@ impl BufferManager {
         let arc = Arc::new(Mutex::new(buf));
 
         self.ring.insert(ptr, arc.clone());
-        console::debug!("[wasm] dump {:?}", self);
+        debug!("[wasm] dump {:?}", self);
 
         Some(arc)
     }
@@ -47,13 +47,13 @@ impl BufferManager {
 
     pub fn dealloc(&mut self, ptr: BufferPtr) -> Option<Arc<Mutex<Buffer>>> {
         let removed = self.ring.remove(&ptr);
-        console::debug!("[wasm] dump {:?}", self);
+        debug!("[wasm] dump {:?}", self);
 
         removed
     }
 
     pub fn clear(&mut self) {
         self.ring.clear();
-        console::debug!("[wasm] dump {:?}", self);
+        debug!("[wasm] dump {:?}", self);
     }
 }
