@@ -18,7 +18,7 @@ macro_rules! info {
 
 #[macro_export]
 macro_rules! warn {
-    ($fmt:expr) => { $crate::error($fmt.warn()) };
+    ($fmt:expr) => { $crate::warn($fmt.into()) };
     ($fmt:expr, $($arg:tt)*) => { $crate::warn(format!($fmt, $($arg)*)) };
 }
 
