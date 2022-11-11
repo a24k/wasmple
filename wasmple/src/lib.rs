@@ -1,13 +1,11 @@
-mod buffer;
-
 use itertools::Itertools;
 
 use serde::{Deserialize, Serialize};
 
 use wasmple_console::info;
 
-use buffer::convert::JsonConvertee;
-use buffer::BufferPtr;
+use wasmple_buffer::convert::JsonConvertee;
+use wasmple_buffer::BufferPtr;
 
 #[derive(Serialize, Deserialize)]
 struct FnConvertParameters {
@@ -31,7 +29,7 @@ pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
 }
 
 fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
-    let input: FnConvertParameters = buffer::into(input_ptr)?;
+    let input: FnConvertParameters = wasmple_buffer::into(input_ptr)?;
 
     let interleaved: String = input.a.chars().interleave(input.b.chars()).collect();
 
@@ -42,5 +40,5 @@ fn _convert(input_ptr: BufferPtr) -> Option<BufferPtr> {
         reversed,
     };
 
-    buffer::from(output)
+    wasmple_buffer::from(output)
 }
