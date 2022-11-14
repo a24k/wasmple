@@ -1,6 +1,6 @@
 {
     "name": "wasmple",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "build:wasm": "cargo build --target wasm32-unknown-unknown --release",
