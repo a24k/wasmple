@@ -1,9 +1,9 @@
 enum LogLevel {
-    LOG,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
+    Log,
+    Debug,
+    Info,
+    Warn,
+    Error,
 }
 
 fn console_message_with_loglevel(level: LogLevel, msg: String) {
@@ -15,25 +15,25 @@ fn console_message_with_loglevel(level: LogLevel, msg: String) {
 
 #[allow(dead_code)]
 pub fn log(msg: String) {
-    console_message_with_loglevel(LogLevel::LOG, msg);
+    console_message_with_loglevel(LogLevel::Log, msg);
 }
 
 #[allow(dead_code)]
 pub fn debug(msg: String) {
-    console_message_with_loglevel(LogLevel::DEBUG, msg);
+    console_message_with_loglevel(LogLevel::Debug, msg);
 }
 
 #[allow(dead_code)]
 pub fn info(msg: String) {
-    console_message_with_loglevel(LogLevel::INFO, msg);
+    console_message_with_loglevel(LogLevel::Info, msg);
 }
 
 #[allow(dead_code)]
 pub fn warn(msg: String) {
-    console_message_with_loglevel(LogLevel::WARN, msg);
+    console_message_with_loglevel(LogLevel::Warn, msg);
 }
 
 #[allow(dead_code)]
 pub fn error(msg: String) {
-    console_message_with_loglevel(LogLevel::ERROR, msg);
+    console_message_with_loglevel(LogLevel::Error, msg);
 }

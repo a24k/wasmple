@@ -14,9 +14,10 @@
         "watch:js": "vite --clearScreen false",
         "predev": "run-s dev:wasm dev:copy",
         "dev": "run-p watch:wasm watch:copy watch:js",
-        "check:wasm": "cargo check --target wasm32-unknown-unknown",
+        "check:wasm:check": "cargo check --target wasm32-unknown-unknown",
+        "check:wasm:clippy": "cargo clippy --target wasm32-unknown-unknown",
         "check:js": "eslint --ext .tsx,.ts,.jsx,.js ./src/",
-        "check": "run-s check:wasm check:js",
+        "check": "run-s check:wasm:check check:wasm:clippy check:js",
         "clean": "rimraf ./target ./dist"
     },
     "license": "MIT",

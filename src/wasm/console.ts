@@ -1,9 +1,9 @@
 enum LogLevel {
-    LOG,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
+    Log,
+    Debug,
+    Info,
+    Warn,
+    Error,
 }
 
 type FnSetPanicHook = () => boolean;
@@ -25,15 +25,15 @@ export class WasmConsole {
             const msg = String.fromCharCode(...chars);
 
             switch (level) {
-                case LogLevel.ERROR:
+                case LogLevel.Error:
                     console.error(msg); break;
-                case LogLevel.WARN:
+                case LogLevel.Warn:
                     console.warn(msg); break;
-                case LogLevel.INFO:
+                case LogLevel.Info:
                     console.info(msg); break;
-                case LogLevel.DEBUG:
+                case LogLevel.Debug:
                     console.debug(msg); break;
-                case LogLevel.LOG:
+                case LogLevel.Log:
                 default:
                     console.log(msg); break;
             }
