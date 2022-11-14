@@ -6,10 +6,22 @@ enum LogLevel {
     Error,
 }
 
+#[cfg(target_family = "wasm")]
 fn console_message_with_loglevel(level: LogLevel, msg: String) {
     let utf16: Vec<u16> = msg.encode_utf16().collect();
     unsafe {
         super::import::console_message(level as u8, utf16.as_ptr(), utf16.len());
+    }
+}
+
+#[cfg(not(target_family = "wasm"))]
+fn console_message_with_loglevel(level: LogLevel, msg: String) {
+    match level {
+        LogLevel::Log => eprintln!("[Log] {}", msg),
+        LogLevel::Debug => eprintln!("[Debug] {}", msg),
+        LogLevel::Info => eprintln!("[Info] {}", msg),
+        LogLevel::Warn => eprintln!("[Warn] {}", msg),
+        LogLevel::Error => eprintln!("[Error] {}", msg),
     }
 }
 
