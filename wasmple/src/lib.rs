@@ -21,7 +21,7 @@ struct FnConvertReturns {
 
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
-    info!("[wasm] convert");
+    info!("[wasm] convert {}", input_ptr);
     _convert(input_ptr).unwrap_or(0)
 }
 
