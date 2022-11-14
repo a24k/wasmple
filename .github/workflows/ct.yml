@@ -28,3 +28,25 @@ jobs:
           shared-key: ${{ runner.os }}
       - run: npm install
       - run: npm run check
+  test:
+    runs-on: ubuntu-latest
+    env:
+      rust-target: x86_64-unknown-linux-gnu
+      node-version: 16.x
+    steps:
+      - uses: actions/checkout@v3
+      - name: use node.js ${{ env.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.node-version }}
+      - name: rust target ${{ env.rust-target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ env.rust-target }}
+          override: true
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ runner.os }}
+      - run: npm install
+      - run: npm run test

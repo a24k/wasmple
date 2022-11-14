@@ -18,6 +18,8 @@
         "check:wasm:clippy": "cargo clippy --target wasm32-unknown-unknown",
         "check:js": "eslint --ext .tsx,.ts,.jsx,.js ./src/",
         "check": "run-s check:wasm:check check:wasm:clippy check:js",
+        "test:wasm": "cargo test",
+        "test": "run-s test:wasm",
         "clean": "rimraf ./target ./dist"
     },
     "license": "MIT",
