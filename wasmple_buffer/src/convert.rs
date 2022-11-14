@@ -2,6 +2,7 @@ mod json;
 mod string;
 
 pub use json::JsonConvertee;
+pub use wasmple_buffer_derive::JsonConvertee;
 
 use super::{BufferManager, BufferPtr};
 

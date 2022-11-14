@@ -26,7 +26,5 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: ${{ runner.os }}
-          workspaces: |
-            wasmple
       - run: npm install
       - run: npm run check

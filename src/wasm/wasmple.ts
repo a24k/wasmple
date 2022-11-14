@@ -1,4 +1,4 @@
-import wasmurl from '../../wasmple/target/wasm32-unknown-unknown/wasmple.wasm?url';
+import wasmurl from '../../target/wasm32-unknown-unknown/wasmple.wasm?url';
 
 import type { BufferPtr } from './buffer';
 import { WasmConsole } from './console';

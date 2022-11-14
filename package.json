@@ -1,23 +1,23 @@
 {
     "name": "wasmple",
-    "version": "0.2.2",
+    "version": "0.4.0",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
-        "build:wasm": "cd ./wasmple && cargo build --target wasm32-unknown-unknown --release",
-        "postbuild:wasm": "wasm-snip -o ./wasmple/target/wasm32-unknown-unknown/wasmple.wasm ./wasmple/target/wasm32-unknown-unknown/release/wasmple.wasm",
+        "build:wasm": "cargo build --target wasm32-unknown-unknown --release",
+        "postbuild:wasm": "wasm-snip -o ./target/wasm32-unknown-unknown/wasmple.wasm ./target/wasm32-unknown-unknown/release/wasmple.wasm",
         "build:js": "vite build",
         "build": "run-s build:wasm build:js",
-        "dev:wasm": "cd ./wasmple && cargo build --target wasm32-unknown-unknown",
-        "dev:copy": "cpx ./wasmple/target/wasm32-unknown-unknown/debug/wasmple.wasm ./wasmple/target/wasm32-unknown-unknown/",
-        "watch:wasm": "cd ./wasmple && cargo watch -x 'build --target wasm32-unknown-unknown'",
-        "watch:copy": "cpx ./wasmple/target/wasm32-unknown-unknown/debug/wasmple.wasm ./wasmple/target/wasm32-unknown-unknown/ --watch",
+        "dev:wasm": "cargo build --target wasm32-unknown-unknown",
+        "dev:copy": "cpx ./target/wasm32-unknown-unknown/debug/wasmple.wasm ./target/wasm32-unknown-unknown/",
+        "watch:wasm": "cargo watch -x 'build --target wasm32-unknown-unknown'",
+        "watch:copy": "cpx ./target/wasm32-unknown-unknown/debug/wasmple.wasm ./target/wasm32-unknown-unknown/ --watch",
         "watch:js": "vite --clearScreen false",
         "predev": "run-s dev:wasm dev:copy",
         "dev": "run-p watch:wasm watch:copy watch:js",
-        "check:wasm": "cd ./wasmple && cargo check --target wasm32-unknown-unknown",
+        "check:wasm": "cargo check --target wasm32-unknown-unknown",
         "check:js": "eslint --ext .tsx,.ts,.jsx,.js ./src/",
         "check": "run-s check:wasm check:js",
-        "clean": "rimraf ./wasmple/target ./dist"
+        "clean": "rimraf ./target ./dist"
     },
     "license": "MIT",
     "devDependencies": {
