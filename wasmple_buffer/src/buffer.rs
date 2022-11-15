@@ -80,8 +80,9 @@ mod tests {
     #[case(Buffer::alloc::<f32>(8))]
     #[case(Buffer::alloc::<f64>(8))]
     fn buffer_alloc(#[case] input: Option<Buffer>) {
-        if let None = input {
-            panic!("input: Option<Buffer> must be Some.");
+        match input {
+            None => panic!("input: Option<Buffer> will be Some."),
+            Some(buf) => assert_ne!(0, buf.ptr()),
         }
     }
 
@@ -119,7 +120,7 @@ mod tests {
     #[case(64, Buffer::alloc::<f64>(8))]
     fn buffer_length_in_u8(#[case] expected: usize, #[case] input: Option<Buffer>) {
         match input {
-            None => panic!("input: Option<Buffer> must be Some."),
+            None => panic!("input: Option<Buffer> will be Some."),
             Some(buf) => assert_eq!(expected, buf.length::<u8>()),
         }
     }
@@ -141,7 +142,7 @@ mod tests {
     #[case(16, Buffer::alloc::<f64>(8))]
     fn buffer_length_in_u32(#[case] expected: usize, #[case] input: Option<Buffer>) {
         match input {
-            None => panic!("input: Option<Buffer> must be Some."),
+            None => panic!("input: Option<Buffer> will be Some."),
             Some(buf) => assert_eq!(expected, buf.length::<u32>()),
         }
     }
