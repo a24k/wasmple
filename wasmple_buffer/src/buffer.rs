@@ -146,4 +146,108 @@ mod tests {
             Some(buf) => assert_eq!(expected, buf.length::<u32>()),
         }
     }
+
+    #[rstest]
+    #[case( 1, Buffer::alloc::<i8> (1))]
+    #[case( 2, Buffer::alloc::<i8> (2))]
+    #[case( 3, Buffer::alloc::<i8> (3))]
+    #[case( 4, Buffer::alloc::<i8> (4))]
+    #[case( 8, Buffer::alloc::<i8> (8))]
+    #[case( 8, Buffer::alloc::<u8> (8))]
+    #[case(16, Buffer::alloc::<i16>(8))]
+    #[case(16, Buffer::alloc::<u16>(8))]
+    #[case(32, Buffer::alloc::<i32>(8))]
+    #[case(32, Buffer::alloc::<u32>(8))]
+    #[case(64, Buffer::alloc::<i64>(8))]
+    #[case(64, Buffer::alloc::<u64>(8))]
+    #[case(32, Buffer::alloc::<f32>(8))]
+    #[case(64, Buffer::alloc::<f64>(8))]
+    fn buffer_slice_in_u8(#[case] expected: usize, #[case] input: Option<Buffer>) {
+        match input {
+            None => panic!("input: Option<Buffer> will be Some."),
+            Some(buf) => {
+                let slice = buf.slice::<u8>();
+                assert_eq!(expected, slice.len());
+                assert!(slice.iter().all(|&x| x == 0));
+            }
+        }
+    }
+
+    #[rstest]
+    #[case( 0, Buffer::alloc::<i8> (1))]
+    #[case( 0, Buffer::alloc::<i8> (2))]
+    #[case( 0, Buffer::alloc::<i8> (3))]
+    #[case( 1, Buffer::alloc::<i8> (4))]
+    #[case( 2, Buffer::alloc::<i8> (8))]
+    #[case( 2, Buffer::alloc::<u8> (8))]
+    #[case( 4, Buffer::alloc::<i16>(8))]
+    #[case( 4, Buffer::alloc::<u16>(8))]
+    #[case( 8, Buffer::alloc::<i32>(8))]
+    #[case( 8, Buffer::alloc::<u32>(8))]
+    #[case(16, Buffer::alloc::<i64>(8))]
+    #[case(16, Buffer::alloc::<u64>(8))]
+    #[case( 8, Buffer::alloc::<f32>(8))]
+    #[case(16, Buffer::alloc::<f64>(8))]
+    fn buffer_slice_in_u32(#[case] expected: usize, #[case] input: Option<Buffer>) {
+        match input {
+            None => panic!("input: Option<Buffer> will be Some."),
+            Some(buf) => {
+                let slice = buf.slice::<u32>();
+                assert_eq!(expected, slice.len());
+                assert!(slice.iter().all(|&x| x == 0));
+            }
+        }
+    }
+
+    #[rstest]
+    #[case( 1, Buffer::alloc::<i8> (1))]
+    #[case( 2, Buffer::alloc::<i8> (2))]
+    #[case( 3, Buffer::alloc::<i8> (3))]
+    #[case( 4, Buffer::alloc::<i8> (4))]
+    #[case( 8, Buffer::alloc::<i8> (8))]
+    #[case( 8, Buffer::alloc::<u8> (8))]
+    #[case(16, Buffer::alloc::<i16>(8))]
+    #[case(16, Buffer::alloc::<u16>(8))]
+    #[case(32, Buffer::alloc::<i32>(8))]
+    #[case(32, Buffer::alloc::<u32>(8))]
+    #[case(64, Buffer::alloc::<i64>(8))]
+    #[case(64, Buffer::alloc::<u64>(8))]
+    #[case(32, Buffer::alloc::<f32>(8))]
+    #[case(64, Buffer::alloc::<f64>(8))]
+    fn buffer_slice_mut_in_u8(#[case] expected: usize, #[case] input: Option<Buffer>) {
+        match input {
+            None => panic!("input: Option<Buffer> will be Some."),
+            Some(mut buf) => {
+                let slice = buf.slice_mut::<u8>();
+                assert_eq!(expected, slice.len());
+                assert!(slice.iter().all(|&x| x == 0));
+            }
+        }
+    }
+
+    #[rstest]
+    #[case( 0, Buffer::alloc::<i8> (1))]
+    #[case( 0, Buffer::alloc::<i8> (2))]
+    #[case( 0, Buffer::alloc::<i8> (3))]
+    #[case( 1, Buffer::alloc::<i8> (4))]
+    #[case( 2, Buffer::alloc::<i8> (8))]
+    #[case( 2, Buffer::alloc::<u8> (8))]
+    #[case( 4, Buffer::alloc::<i16>(8))]
+    #[case( 4, Buffer::alloc::<u16>(8))]
+    #[case( 8, Buffer::alloc::<i32>(8))]
+    #[case( 8, Buffer::alloc::<u32>(8))]
+    #[case(16, Buffer::alloc::<i64>(8))]
+    #[case(16, Buffer::alloc::<u64>(8))]
+    #[case( 8, Buffer::alloc::<f32>(8))]
+    #[case(16, Buffer::alloc::<f64>(8))]
+    fn buffer_slice_mut_in_u32(#[case] expected: usize, #[case] input: Option<Buffer>) {
+        match input {
+            None => panic!("input: Option<Buffer> will be Some."),
+            Some(mut buf) => {
+                let slice = buf.slice_mut::<u32>();
+                assert_eq!(expected, slice.len());
+                assert!(slice.iter().all(|&x| x == 0));
+            }
+        }
+    }
 }
