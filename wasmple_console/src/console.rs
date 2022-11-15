@@ -49,3 +49,20 @@ pub fn warn(msg: String) {
 pub fn error(msg: String) {
     console_message_with_loglevel(LogLevel::Error, msg);
 }
+
+#[cfg(test)]
+mod tests {
+    use rstest::*;
+
+    use super::LogLevel;
+
+    #[rstest]
+    #[case(0, LogLevel::Log   as u8)]
+    #[case(1, LogLevel::Debug as u8)]
+    #[case(2, LogLevel::Info  as u8)]
+    #[case(3, LogLevel::Warn  as u8)]
+    #[case(4, LogLevel::Error as u8)]
+    fn loglevel_as_u8(#[case] expected: u8, #[case] input: u8) {
+        assert_eq!(expected, input);
+    }
+}
