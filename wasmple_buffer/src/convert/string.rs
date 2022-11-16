@@ -23,3 +23,32 @@ impl BufferConverter<String> for String {
         Some(buf.ptr())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use rstest::*;
+
+    use super::super::{from, into};
+
+    #[rstest]
+    #[case("abc123")]
+    #[case("日本語でこんにちわ")]
+    #[case("😁😊😋")]
+    fn convert_string(#[case] input: String) {
+        let ptr = from(input.clone());
+
+        match ptr {
+            None => panic!("ptr: Option<BufferPtr> will be Some."),
+            Some(ptr) => {
+                let output = into::<String>(ptr);
+
+                match output {
+                    None => panic!("ptr: Option<String> will be Some."),
+                    Some(output) => {
+                        assert_eq!(input, output);
+                    }
+                }
+            }
+        }
+    }
+}

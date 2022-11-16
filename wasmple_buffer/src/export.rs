@@ -1,36 +1,6 @@
+use super::define::T;
 use super::BufferManager;
 use super::BufferPtr;
-
-enum T {
-    I8,
-    U8,
-    I16,
-    U16,
-    I32,
-    U32,
-    I64,
-    U64,
-    F32,
-    F64,
-}
-
-impl From<u8> for T {
-    fn from(t: u8) -> Self {
-        match t {
-            0 => T::I8,
-            1 => T::U8,
-            2 => T::I16,
-            3 => T::U16,
-            4 => T::I32,
-            5 => T::U32,
-            6 => T::I64,
-            7 => T::U64,
-            8 => T::F32,
-            9 => T::F64,
-            _ => T::U8,
-        }
-    }
-}
 
 #[no_mangle]
 pub extern "C" fn buffer_alloc(t: u8, len: usize) -> BufferPtr {
