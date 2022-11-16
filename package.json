@@ -1,6 +1,6 @@
 {
     "name": "wasmple",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "build:wasm": "cargo build --target wasm32-unknown-unknown --release",
@@ -19,11 +19,13 @@
         "check:js": "eslint --ext .tsx,.ts,.jsx,.js ./src/",
         "check": "run-s check:wasm:check check:wasm:clippy check:js",
         "test:wasm": "cargo test",
-        "test": "run-s test:wasm",
+        "test:js": "jest",
+        "test": "run-s test:wasm test:js",
         "clean": "rimraf ./target ./dist"
     },
     "license": "MIT",
     "devDependencies": {
+        "@jest/globals": "^29.3.1",
         "@tailwindcss/forms": "^0.5.3",
         "@typescript-eslint/eslint-plugin": "^5.40.0",
         "@typescript-eslint/parser": "^5.40.0",
@@ -33,9 +35,11 @@
         "cssnano": "^5.1.13",
         "eslint": "^8.25.0",
         "eslint-plugin-solid": "^0.7.3",
+        "jest": "^29.3.1",
         "npm-run-all": "^4.1.5",
         "rimraf": "^3.0.2",
         "tailwindcss": "^3.1.8",
+        "ts-jest": "^29.0.3",
         "typescript": "^4.8.4",
         "vite": "^3.1.7",
         "vite-plugin-solid": "^2.3.9"
