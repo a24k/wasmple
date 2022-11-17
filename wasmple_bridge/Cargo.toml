@@ -1,0 +1,11 @@
+[package]
+name = "wasmple_bridge"
+description = "a sample project for WebAssembly with Rust & SolidJS."
+version = "0.4.2"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+wasmple_bridge_impl = { path = "../wasmple_bridge_impl" }
