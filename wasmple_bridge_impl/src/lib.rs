@@ -25,7 +25,9 @@ mod tests {
     use quote::quote;
 
     #[rstest]
+    // empty
     #[case(quote!{ })]
+    // Rust tokens
     #[case(quote!{
         pub type TestType = usize;
     })]
@@ -40,6 +42,10 @@ mod tests {
             input_ptr
         }
     })]
+    // TypeScript tokens, these are also valid as TokenStream in these cases
+    #[case(quote!{ export type TestType = number; })]
+    #[case(quote!{ export type FnConvertParameters = { a: string, b: string }; })]
+    #[case(quote!{ export type FnConvertParameters = (ptr: BufferPtr) => BufferPtr; })]
     fn do_not_modify_the_item(#[case] item: TokenStream) {
         assert_eq!(
             item.to_string(),
@@ -48,16 +54,16 @@ mod tests {
     }
 
     #[rstest]
-    #[case("type", syn::parse2::<Item>(quote!{
+    #[case("type", syn::parse2(quote!{
         pub type TestType = usize;
     }).unwrap())]
-    #[case("struct", syn::parse2::<Item>(quote!{
+    #[case("struct", syn::parse2(quote!{
         struct TestStruct {
             num: u32,
             str: String,
         }
     }).unwrap())]
-    #[case("fn", syn::parse2::<Item>(quote!{
+    #[case("fn", syn::parse2(quote!{
         pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
             input_ptr
         }
