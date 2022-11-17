@@ -1,7 +1,7 @@
 [package]
 name = "wasmple_buffer_derive"
 description = "a sample project for WebAssembly with Rust & SolidJS."
-version = "0.4.0"
+version = "0.4.2"
 edition = "2021"
 
 [lib]
