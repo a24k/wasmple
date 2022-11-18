@@ -24,11 +24,11 @@ impl ToTsType for TypePath {
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
                 "Option" => {
-                    let ty = seg_to_type(seg).unwrap_or_else(|| unsupported!(self));
+                    let ty = seg_to_type(self, seg);
                     quote! { #ty? }
                 }
                 "Vec" => {
-                    let ty = seg_to_type(seg).unwrap_or_else(|| unsupported!(self));
+                    let ty = seg_to_type(self, seg);
                     quote! { #ty[] }
                 }
                 _ => {
@@ -40,13 +40,13 @@ impl ToTsType for TypePath {
     }
 }
 
-fn seg_to_type(seg: &PathSegment) -> Option<TokenStream> {
+fn seg_to_type(path: &TypePath, seg: &PathSegment) -> TokenStream {
     match &seg.arguments {
         PathArguments::AngleBracketed(args) => match args.args.first() {
-            Some(GenericArgument::Type(ty)) => Some(ty.to_tstype_token_stream()),
-            _ => None,
+            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
+            _ => unsupported!(path),
         },
-        _ => None,
+        _ => unsupported!(path),
     }
 }
 
