@@ -12,6 +12,13 @@ pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream
     item
 }
 
+#[macro_export]
+macro_rules! unsupported {
+    ($e:expr) => {
+        panic!("[wasmple_bridge] unsupported {:?}", $e)
+    };
+}
+
 #[cfg(test)]
 mod tests {
     use rstest::*;
@@ -26,14 +33,13 @@ mod tests {
     #[case::rust(quote! {
         pub type TestType = usize;
     })]
-    #[should_panic(expected="unsupported Struct")]
     #[case::rust(quote! {
         struct TestStruct {
             num: u32,
             str: String,
         }
     })]
-    #[should_panic(expected="unsupported Fn")]
+    #[should_panic(expected = "unsupported Fn")]
     #[case::rust(quote! {
         pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
             input_ptr
@@ -41,8 +47,8 @@ mod tests {
     })]
     // TypeScript tokens, these are also valid as TokenStream in these cases
     #[case::typescript(quote! { export type TestType = number; })]
-    #[case::typescript(quote! { export type FnConvertParameters = { a: string, b: string }; })]
-    #[case::typescript(quote! { export type FnConvertParameters = (ptr: BufferPtr) => BufferPtr; })]
+    #[case::typescript(quote! { export type TestStruct = { num: number, str: string }; })]
+    #[case::typescript(quote! { export type TestFn = (ptr: BufferPtr) => BufferPtr; })]
     fn do_not_modify_input_item(#[case] item: TokenStream) {
         assert_eq!(
             item.to_string(),

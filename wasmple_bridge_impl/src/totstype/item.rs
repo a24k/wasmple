@@ -1,13 +1,15 @@
 use proc_macro2::TokenStream;
 use syn::Item;
 
+use crate::unsupported;
 use super::ToTsType;
 
 impl ToTsType for Item {
     fn to_tstype_token_stream(&self) -> TokenStream {
         match self {
             Item::Type(item) => item.to_tstype_token_stream(),
-            _ => panic!("[wasmple_bridge] unsupported {:?}", self),
+            Item::Struct(item) => item.to_tstype_token_stream(),
+            _ => unsupported!(self),
         }
     }
 }
@@ -24,6 +26,14 @@ mod tests {
         export type TestType = number;
     }, quote! {
         pub type TestType = usize;
+    })]
+    #[case(quote! {
+        export type TestStruct = { num: number, str: string };
+    }, quote! {
+        struct TestStruct {
+            num: u32,
+            str: String,
+        }
     })]
     fn convert_item_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: Item = syn::parse2(item).unwrap();

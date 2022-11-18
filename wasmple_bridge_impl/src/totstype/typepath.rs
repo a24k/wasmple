@@ -2,6 +2,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::TypePath;
 
+use crate::unsupported;
 use super::ToTsType;
 
 impl ToTsType for TypePath {
@@ -9,7 +10,7 @@ impl ToTsType for TypePath {
         let segs = &self.path.segments;
 
         if segs.len() != 1 {
-            panic!("[wasmple_bridge] unsupported {:?}", self);
+            unsupported!(self);
         }
 
         segs.first().map_or(quote! {}, |seg| {
@@ -27,7 +28,7 @@ impl ToTsType for TypePath {
                 "f64" => quote! { number },
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
-                _ => panic!("[wasmple_bridge] unsupported {:?}", self),
+                _ => unsupported!(self),
 
             }
         })

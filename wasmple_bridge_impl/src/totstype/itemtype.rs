@@ -1,19 +1,14 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{ItemType, Type};
+use syn::ItemType;
 
 use super::ToTsType;
 
 impl ToTsType for ItemType {
     fn to_tstype_token_stream(&self) -> TokenStream {
         let ident = &self.ident;
-
-        let type_token = match self.ty.as_ref() {
-            Type::Path(path) => path.to_tstype_token_stream(),
-            _ => panic!("[wasmple_bridge] unsupported {:?}", self),
-        };
-
-        quote! { export type #ident = #type_token ; }
+        let ty = self.ty.to_tstype_token_stream();
+        quote! { export type #ident = #ty ; }
     }
 }
 
@@ -29,7 +24,7 @@ mod tests {
     #[case(quote! {}, quote! {
         pub type TestType = unknown;
     })]
-    #[should_panic(expected = "unsupported ItemType")]
+    #[should_panic(expected = "unsupported BareFn")]
     #[case(quote! {}, quote! {
         pub type TestType = fn();
     })]
