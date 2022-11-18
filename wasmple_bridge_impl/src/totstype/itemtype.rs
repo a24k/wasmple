@@ -7,13 +7,11 @@ use super::ToTsType;
 impl ToTsType for ItemType {
     fn to_tstype_token_stream(&self) -> TokenStream {
         let ident = &self.ident;
+
         let type_token = match self.ty.as_ref() {
             Type::Path(path) => path.to_tstype_token_stream(),
-            _ => quote! {},
+            _ => panic!("[wasmple_bridge] unsupported {:?}", self),
         };
-        if type_token.is_empty() {
-            return quote! {};
-        }
 
         quote! { export type #ident = #type_token ; }
     }
@@ -27,8 +25,13 @@ mod tests {
     use quote::quote;
 
     #[rstest]
+    #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {}, quote! {
         pub type TestType = unknown;
+    })]
+    #[should_panic(expected = "unsupported ItemType")]
+    #[case(quote! {}, quote! {
+        pub type TestType = fn();
     })]
     #[case(quote! {
         export type TestType = number;
@@ -45,7 +48,7 @@ mod tests {
     }, quote! {
         pub type TestType = String;
     })]
-    fn convert_type_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_itemtype_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: ItemType = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),

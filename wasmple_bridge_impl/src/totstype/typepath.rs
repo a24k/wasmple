@@ -9,11 +9,11 @@ impl ToTsType for TypePath {
         let segs = &self.path.segments;
 
         if segs.len() != 1 {
-            return quote! {};
+            panic!("[wasmple_bridge] unsupported {:?}", self);
         }
 
-        segs.first().map_or(quote! {}, |segment| {
-            match segment.ident.to_string().as_str() {
+        segs.first().map_or(quote! {}, |seg| {
+            match seg.ident.to_string().as_str() {
                 "usize" => quote! { number },
                 "i8" => quote! { number },
                 "u8" => quote! { number },
@@ -27,7 +27,8 @@ impl ToTsType for TypePath {
                 "f64" => quote! { number },
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
-                _ => quote! {},
+                _ => panic!("[wasmple_bridge] unsupported {:?}", self),
+
             }
         })
     }
@@ -41,8 +42,11 @@ mod tests {
     use quote::quote;
 
     #[rstest]
+    #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {}, quote! { unknown })]
+    #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {}, quote! { unknown::unknown })]
+    #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {}, quote! { usize::usize })]
     #[case(quote! { number }, quote! { usize })]
     #[case(quote! { number }, quote! { i8 })]

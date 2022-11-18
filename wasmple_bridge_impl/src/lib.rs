@@ -21,26 +21,28 @@ mod tests {
 
     #[rstest]
     // empty
-    #[case(quote! {})]
+    #[case::empty(quote! {})]
     // Rust tokens
-    #[case(quote! {
+    #[case::rust(quote! {
         pub type TestType = usize;
     })]
-    #[case(quote! {
+    #[should_panic(expected="unsupported Struct")]
+    #[case::rust(quote! {
         struct TestStruct {
             num: u32,
             str: String,
         }
     })]
-    #[case(quote! {
+    #[should_panic(expected="unsupported Fn")]
+    #[case::rust(quote! {
         pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
             input_ptr
         }
     })]
     // TypeScript tokens, these are also valid as TokenStream in these cases
-    #[case(quote! { export type TestType = number; })]
-    #[case(quote! { export type FnConvertParameters = { a: string, b: string }; })]
-    #[case(quote! { export type FnConvertParameters = (ptr: BufferPtr) => BufferPtr; })]
+    #[case::typescript(quote! { export type TestType = number; })]
+    #[case::typescript(quote! { export type FnConvertParameters = { a: string, b: string }; })]
+    #[case::typescript(quote! { export type FnConvertParameters = (ptr: BufferPtr) => BufferPtr; })]
     fn do_not_modify_input_item(#[case] item: TokenStream) {
         assert_eq!(
             item.to_string(),

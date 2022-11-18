@@ -1,5 +1,4 @@
 use proc_macro2::TokenStream;
-use quote::quote;
 use syn::Item;
 
 use super::ToTsType;
@@ -8,7 +7,7 @@ impl ToTsType for Item {
     fn to_tstype_token_stream(&self) -> TokenStream {
         match self {
             Item::Type(item) => item.to_tstype_token_stream(),
-            _ => quote! {},
+            _ => panic!("[wasmple_bridge] unsupported {:?}", self),
         }
     }
 }
