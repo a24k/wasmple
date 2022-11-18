@@ -21,9 +21,10 @@ mod tests {
 
     #[rstest]
     #[case(quote! {
-        export type TestStruct = { num: number, str: string };
+        export type TestStruct = { ptr: BufferPtr, num: number, str: string };
     }, quote! {
         struct TestStruct {
+            ptr: BufferPtr,
             num: u32,
             str: String,
         }

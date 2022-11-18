@@ -2,8 +2,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::TypePath;
 
-use crate::unsupported;
 use super::ToTsType;
+use crate::unsupported;
 
 impl ToTsType for TypePath {
     fn to_tstype_token_stream(&self) -> TokenStream {
@@ -13,8 +13,8 @@ impl ToTsType for TypePath {
             unsupported!(self);
         }
 
-        segs.first().map_or(quote! {}, |seg| {
-            match seg.ident.to_string().as_str() {
+        segs.last()
+            .map_or(quote! {}, |seg| match seg.ident.to_string().as_str() {
                 "usize" => quote! { number },
                 "i8" => quote! { number },
                 "u8" => quote! { number },
@@ -28,10 +28,12 @@ impl ToTsType for TypePath {
                 "f64" => quote! { number },
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
-                _ => unsupported!(self),
-
-            }
-        })
+                "Vec" => unsupported!(self),
+                _ => {
+                    let ident = &seg.ident;
+                    quote! { #ident }
+                }
+            })
     }
 }
 
@@ -43,8 +45,6 @@ mod tests {
     use quote::quote;
 
     #[rstest]
-    #[should_panic(expected = "unsupported TypePath")]
-    #[case(quote! {}, quote! { unknown })]
     #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {}, quote! { unknown::unknown })]
     #[should_panic(expected = "unsupported TypePath")]
@@ -62,6 +62,8 @@ mod tests {
     #[case(quote! { number }, quote! { f64 })]
     #[case(quote! { boolean }, quote! { bool })]
     #[case(quote! { string }, quote! { String })]
+    #[case(quote! { unknown }, quote! { unknown })]
+    #[case(quote! { TestStruct }, quote! { TestStruct })]
     fn convert_typepath_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: TypePath = syn::parse2(item).unwrap();
         assert_eq!(

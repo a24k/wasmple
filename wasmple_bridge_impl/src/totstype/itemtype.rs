@@ -2,12 +2,17 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::ItemType;
 
+use crate::unsupported;
 use super::ToTsType;
 
 impl ToTsType for ItemType {
     fn to_tstype_token_stream(&self) -> TokenStream {
         let ident = &self.ident;
         let ty = self.ty.to_tstype_token_stream();
+        match ty.to_string().as_str() {
+            "number" | "boolean" | "string" => (),
+            _ => unsupported!(self),
+        }
         quote! { export type #ident = #ty ; }
     }
 }
@@ -20,7 +25,7 @@ mod tests {
     use quote::quote;
 
     #[rstest]
-    #[should_panic(expected = "unsupported TypePath")]
+    #[should_panic(expected = "unsupported ItemType")]
     #[case(quote! {}, quote! {
         pub type TestType = unknown;
     })]
