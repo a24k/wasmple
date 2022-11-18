@@ -1,8 +1,8 @@
 use proc_macro2::TokenStream;
 use syn::Type;
 
-use crate::unsupported;
 use super::ToTsType;
+use crate::unsupported;
 
 impl ToTsType for Type {
     fn to_tstype_token_stream(&self) -> TokenStream {
@@ -10,7 +10,8 @@ impl ToTsType for Type {
             Type::Path(path) => path.to_tstype_token_stream(),
             Type::Paren(paren) => paren.elem.to_tstype_token_stream(),
             _ => unsupported!(self),
-        } }
+        }
+    }
 }
 
 #[cfg(test)]

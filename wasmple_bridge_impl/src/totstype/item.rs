@@ -1,8 +1,8 @@
 use proc_macro2::TokenStream;
 use syn::Item;
 
-use crate::unsupported;
 use super::ToTsType;
+use crate::unsupported;
 
 impl ToTsType for Item {
     fn to_tstype_token_stream(&self) -> TokenStream {
@@ -28,11 +28,13 @@ mod tests {
         pub type TestType = usize;
     })]
     #[case(quote! {
-        export type TestStruct = { num: number, str: string };
+        export type TestStruct = { size: TestType, num: number, str: string?, vec: string[] };
     }, quote! {
         struct TestStruct {
+            size: TestType,
             num: u32,
-            str: String,
+            str: Option<String>,
+            vec: Vec<String>,
         }
     })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {

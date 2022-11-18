@@ -29,9 +29,8 @@ mod tests {
     }, quote! {
         { num: u32, str: String, }
     })]
-    #[should_panic(expected = "unsupported TypePath")]
     #[case(quote! {
-        { length: number, str: string }
+        { length: number, str: string[] }
     }, quote! {
         { length: usize, str: Vec<String>, }
     })]

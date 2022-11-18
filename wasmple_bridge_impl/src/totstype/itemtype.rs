@@ -2,8 +2,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::ItemType;
 
-use crate::unsupported;
 use super::ToTsType;
+use crate::unsupported;
 
 impl ToTsType for ItemType {
     fn to_tstype_token_stream(&self) -> TokenStream {

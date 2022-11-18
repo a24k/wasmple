@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::TypePath;
+use syn::{GenericArgument, PathArguments, TypePath};
 
 use super::ToTsType;
 use crate::unsupported;
@@ -9,28 +9,45 @@ impl ToTsType for TypePath {
     fn to_tstype_token_stream(&self) -> TokenStream {
         match self.path.segments.last() {
             None => unsupported!(self),
-            Some(seg) => {
-                match seg.ident.to_string().as_str() {
-                    "usize" => quote! { number },
-                    "i8" => quote! { number },
-                    "u8" => quote! { number },
-                    "i16" => quote! { number },
-                    "u16" => quote! { number },
-                    "i32" => quote! { number },
-                    "u32" => quote! { number },
-                    "i64" => quote! { number },
-                    "u64" => quote! { number },
-                    "f32" => quote! { number },
-                    "f64" => quote! { number },
-                    "bool" => quote! { boolean },
-                    "String" => quote! { string },
-                    "Vec" => unsupported!(self), // to be recognized as array[]
-                    _ => {
-                        let ident = &seg.ident;
-                        quote! { #ident }
-                    }
+            Some(seg) => match seg.ident.to_string().as_str() {
+                "usize" => quote! { number },
+                "i8" => quote! { number },
+                "u8" => quote! { number },
+                "i16" => quote! { number },
+                "u16" => quote! { number },
+                "i32" => quote! { number },
+                "u32" => quote! { number },
+                "i64" => quote! { number },
+                "u64" => quote! { number },
+                "f32" => quote! { number },
+                "f64" => quote! { number },
+                "bool" => quote! { boolean },
+                "String" => quote! { string },
+                "Option" => {
+                    let ty = match &seg.arguments {
+                        PathArguments::AngleBracketed(args) => match args.args.first() {
+                            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
+                            _ => unsupported!(self),
+                        },
+                        _ => unsupported!(self),
+                    };
+                    quote! { #ty? }
                 }
-            }
+                "Vec" => {
+                    let ty = match &seg.arguments {
+                        PathArguments::AngleBracketed(args) => match args.args.first() {
+                            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
+                            _ => unsupported!(self),
+                        },
+                        _ => unsupported!(self),
+                    };
+                    quote! { #ty[] }
+                }
+                _ => {
+                    let ident = &seg.ident;
+                    quote! { #ident }
+                }
+            },
         }
     }
 }
@@ -56,6 +73,9 @@ mod tests {
     #[case(quote! { number }, quote! { f64 })]
     #[case(quote! { boolean }, quote! { bool })]
     #[case(quote! { string }, quote! { String })]
+    #[case(quote! { string? }, quote! { Option<String> })]
+    #[case(quote! { string[] }, quote! { Vec<String> })]
+    #[case(quote! { string[][] }, quote! { Vec<Vec<String>> })]
     #[case(quote! { unknown }, quote! { unknown })]
     #[case(quote! { TestStruct }, quote! { TestStruct })]
     #[case(quote! { unknown }, quote! { unknown::unknown })]
