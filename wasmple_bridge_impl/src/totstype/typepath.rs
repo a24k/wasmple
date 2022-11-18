@@ -28,7 +28,7 @@ impl ToTsType for TypePath {
                 "f64" => quote! { number },
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
-                "Vec" => unsupported!(self),
+                "Vec" => unsupported!(self), // to be recognized as array[]
                 _ => {
                     let ident = &seg.ident;
                     quote! { #ident }
@@ -64,7 +64,7 @@ mod tests {
     #[case(quote! { string }, quote! { String })]
     #[case(quote! { unknown }, quote! { unknown })]
     #[case(quote! { TestStruct }, quote! { TestStruct })]
-    fn convert_typepath_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: TypePath = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),

@@ -29,7 +29,7 @@ mod tests {
             str: String,
         }
     })]
-    fn convert_itemstruct_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: ItemStruct = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),

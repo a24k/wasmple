@@ -48,7 +48,7 @@ mod tests {
     }, quote! {
         pub type TestType = String;
     })]
-    fn convert_itemtype_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: ItemType = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),

@@ -10,8 +10,7 @@ impl ToTsType for Type {
             Type::Path(path) => path.to_tstype_token_stream(),
             Type::Paren(paren) => paren.elem.to_tstype_token_stream(),
             _ => unsupported!(self),
-        }
-    }
+        } }
 }
 
 #[cfg(test)]
@@ -44,7 +43,7 @@ mod tests {
     #[case(quote! {}, quote! { T + U })]
     #[should_panic(expected = "unsupported Infer")]
     #[case(quote! { number }, quote! { _ })]
-    fn convert_type_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: Type = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),

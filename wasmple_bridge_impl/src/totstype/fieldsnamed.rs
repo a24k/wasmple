@@ -35,7 +35,7 @@ mod tests {
     }, quote! {
         { length: usize, str: Vec<String>, }
     })]
-    fn convert_fieldsnamed_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
+    fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: FieldsNamed = syn::parse2(item).unwrap();
         assert_eq!(
             expected.to_string(),
