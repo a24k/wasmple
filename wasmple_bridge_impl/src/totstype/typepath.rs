@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{GenericArgument, PathArguments, TypePath};
+use syn::{GenericArgument, PathArguments, PathSegment, TypePath};
 
 use super::ToTsType;
 use crate::unsupported;
@@ -24,23 +24,11 @@ impl ToTsType for TypePath {
                 "bool" => quote! { boolean },
                 "String" => quote! { string },
                 "Option" => {
-                    let ty = match &seg.arguments {
-                        PathArguments::AngleBracketed(args) => match args.args.first() {
-                            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
-                            _ => unsupported!(self),
-                        },
-                        _ => unsupported!(self),
-                    };
+                    let ty = seg_to_type(seg).unwrap_or_else(|| unsupported!(self));
                     quote! { #ty? }
                 }
                 "Vec" => {
-                    let ty = match &seg.arguments {
-                        PathArguments::AngleBracketed(args) => match args.args.first() {
-                            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
-                            _ => unsupported!(self),
-                        },
-                        _ => unsupported!(self),
-                    };
+                    let ty = seg_to_type(seg).unwrap_or_else(|| unsupported!(self));
                     quote! { #ty[] }
                 }
                 _ => {
@@ -49,6 +37,16 @@ impl ToTsType for TypePath {
                 }
             },
         }
+    }
+}
+
+fn seg_to_type(seg: &PathSegment) -> Option<TokenStream> {
+    match &seg.arguments {
+        PathArguments::AngleBracketed(args) => match args.args.first() {
+            Some(GenericArgument::Type(ty)) => Some(ty.to_tstype_token_stream()),
+            _ => None,
+        },
+        _ => None,
     }
 }
 
@@ -80,6 +78,10 @@ mod tests {
     #[case(quote! { TestStruct }, quote! { TestStruct })]
     #[case(quote! { unknown }, quote! { unknown::unknown })]
     #[case(quote! { number }, quote! { usize::usize })]
+    #[should_panic(expected = "unsupported TypePath")]
+    #[case(quote! { string[] }, quote! { Option<'a> })]
+    #[should_panic(expected = "unsupported TypePath")]
+    #[case(quote! { string[] }, quote! { Vec<'a> })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: TypePath = syn::parse2(item).unwrap();
         assert_eq!(
