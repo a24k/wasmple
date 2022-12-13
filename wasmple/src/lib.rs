@@ -4,15 +4,19 @@ use serde::{Deserialize, Serialize};
 
 use wasmple_console::info;
 
+use wasmple_bridge::wasmple_bridge;
+
 use wasmple_buffer::convert::JsonConvertee;
 use wasmple_buffer::BufferPtr;
 
+#[wasmple_bridge]
 #[derive(Serialize, Deserialize, JsonConvertee, Debug, PartialEq, Eq)]
 struct FnConvertParameters {
     a: String,
     b: String,
 }
 
+#[wasmple_bridge]
 #[derive(Serialize, Deserialize, JsonConvertee, Debug, PartialEq, Eq)]
 struct FnConvertReturns {
     interleaved: String,

@@ -1,7 +1,7 @@
 [package]
 name = "wasmple"
 description = "a sample project for WebAssembly with Rust & SolidJS."
-version = "0.4.1"
+version = "0.4.2"
 edition = "2021"
 
 [lib]
@@ -10,6 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 itertools = "0.10.5"
 serde = { version = "1.0.147", features = ["derive"] }
+wasmple_bridge = { path = "../wasmple_bridge" }
 wasmple_buffer = { path = "../wasmple_buffer" }
 wasmple_console = { path = "../wasmple_console" }
 
