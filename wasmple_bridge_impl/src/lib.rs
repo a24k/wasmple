@@ -16,6 +16,7 @@ pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream
     quote! {
         #item
 
+        #[cfg(not(target_arch = "wasm32"))]
         wasmple_bridge_impl::inventory::submit!(wasmple_bridge_impl::TsString::new(#script));
     }
 }
@@ -31,6 +32,7 @@ impl TsString {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 inventory::collect!(TsString);
 
 #[macro_export]
