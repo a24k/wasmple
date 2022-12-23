@@ -5,9 +5,9 @@ use super::ToTsType;
 use crate::unsupported;
 
 impl ToTsType for Fields {
-    fn to_tstype_token_stream(&self) -> TokenStream {
+    fn to_tstype(&self) -> TokenStream {
         match self {
-            Fields::Named(fields) => fields.to_tstype_token_stream(),
+            Fields::Named(fields) => fields.to_tstype(),
             _ => unsupported!(self),
         }
     }

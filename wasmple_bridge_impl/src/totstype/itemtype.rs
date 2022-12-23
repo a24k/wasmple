@@ -6,9 +6,9 @@ use super::ToTsType;
 use crate::unsupported;
 
 impl ToTsType for ItemType {
-    fn to_tstype_token_stream(&self) -> TokenStream {
+    fn to_tstype(&self) -> TokenStream {
         let ident = &self.ident;
-        let ty = self.ty.to_tstype_token_stream();
+        let ty = self.ty.to_tstype();
         match ty.to_string().as_str() {
             "number" | "boolean" | "string" => (),
             _ => unsupported!(self),
@@ -50,9 +50,6 @@ mod tests {
     })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: ItemType = syn::parse2(item).unwrap();
-        assert_eq!(
-            expected.to_string(),
-            item.to_tstype_token_stream().to_string()
-        );
+        assert_eq!(expected.to_string(), item.to_tstype().to_string());
     }
 }

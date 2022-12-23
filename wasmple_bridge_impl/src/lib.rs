@@ -7,7 +7,7 @@ use totstype::ToTsType;
 
 pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream {
     if let Ok(item) = syn::parse2::<Item>(item.clone()) {
-        item.to_tstype_token_stream();
+        item.to_tstype();
     }
     item
 }

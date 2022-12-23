@@ -6,7 +6,7 @@ use super::ToTsType;
 use crate::unsupported;
 
 impl ToTsType for TypePath {
-    fn to_tstype_token_stream(&self) -> TokenStream {
+    fn to_tstype(&self) -> TokenStream {
         match self.path.segments.last() {
             None => unsupported!(self),
             Some(seg) => match seg.ident.to_string().as_str() {
@@ -43,7 +43,7 @@ impl ToTsType for TypePath {
 fn seg_to_type(path: &TypePath, seg: &PathSegment) -> TokenStream {
     match &seg.arguments {
         PathArguments::AngleBracketed(args) => match args.args.first() {
-            Some(GenericArgument::Type(ty)) => ty.to_tstype_token_stream(),
+            Some(GenericArgument::Type(ty)) => ty.to_tstype(),
             _ => unsupported!(path),
         },
         _ => unsupported!(path),
@@ -84,9 +84,6 @@ mod tests {
     #[case(quote! { string[] }, quote! { Vec<'a> })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: TypePath = syn::parse2(item).unwrap();
-        assert_eq!(
-            expected.to_string(),
-            item.to_tstype_token_stream().to_string()
-        );
+        assert_eq!(expected.to_string(), item.to_tstype().to_string());
     }
 }

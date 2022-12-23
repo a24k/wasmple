@@ -5,10 +5,10 @@ use super::ToTsType;
 use crate::unsupported;
 
 impl ToTsType for Type {
-    fn to_tstype_token_stream(&self) -> TokenStream {
+    fn to_tstype(&self) -> TokenStream {
         match self {
-            Type::Path(path) => path.to_tstype_token_stream(),
-            Type::Paren(paren) => paren.elem.to_tstype_token_stream(),
+            Type::Path(path) => path.to_tstype(),
+            Type::Paren(paren) => paren.elem.to_tstype(),
             _ => unsupported!(self),
         }
     }
@@ -46,9 +46,6 @@ mod tests {
     #[case(quote! { number }, quote! { _ })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: Type = syn::parse2(item).unwrap();
-        assert_eq!(
-            expected.to_string(),
-            item.to_tstype_token_stream().to_string()
-        );
+        assert_eq!(expected.to_string(), item.to_tstype().to_string());
     }
 }

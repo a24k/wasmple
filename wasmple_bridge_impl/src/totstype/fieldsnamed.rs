@@ -5,10 +5,10 @@ use syn::FieldsNamed;
 use super::ToTsType;
 
 impl ToTsType for FieldsNamed {
-    fn to_tstype_token_stream(&self) -> TokenStream {
+    fn to_tstype(&self) -> TokenStream {
         let fields = self.named.iter().map(|field| {
             let ident = &field.ident;
-            let ty = field.ty.to_tstype_token_stream();
+            let ty = field.ty.to_tstype();
             quote! { #ident: #ty }
         });
 
@@ -36,9 +36,6 @@ mod tests {
     })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: FieldsNamed = syn::parse2(item).unwrap();
-        assert_eq!(
-            expected.to_string(),
-            item.to_tstype_token_stream().to_string()
-        );
+        assert_eq!(expected.to_string(), item.to_tstype().to_string());
     }
 }
