@@ -1,6 +1,6 @@
 pub use wasmple_bridge_attribute::wasmple_bridge;
 
-pub use inventory;
+pub use inventory::submit;
 
 pub struct TsScript {
     #[allow(dead_code)] // temporary avoid warning

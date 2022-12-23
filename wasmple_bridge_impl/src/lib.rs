@@ -15,7 +15,7 @@ pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream
         #item
 
         #[cfg(not(target_arch = "wasm32"))]
-        wasmple_bridge::inventory::submit!(wasmple_bridge::TsScript::new(#script));
+        wasmple_bridge::submit!(wasmple_bridge::TsScript::new(#script));
     }
 }
 
