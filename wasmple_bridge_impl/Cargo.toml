@@ -1,7 +1,7 @@
 [package]
 name = "wasmple_bridge_impl"
 description = "a sample project for WebAssembly with Rust & SolidJS."
-version = "0.4.2"
+version = "0.4.3"
 edition = "2021"
 
 [lib]
@@ -11,7 +11,6 @@ crate-type = ["cdylib", "rlib"]
 proc-macro2 = "1.0.47"
 quote = "1.0.21"
 syn = "1.0.103"
-inventory = "0.3.3"
 
 [dev-dependencies]
 rstest = "0.15.0"

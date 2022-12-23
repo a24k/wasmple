@@ -1,6 +1,17 @@
-use proc_macro::TokenStream;
+pub use wasmple_bridge_attribute::wasmple_bridge;
 
-#[proc_macro_attribute]
-pub fn wasmple_bridge(attr: TokenStream, item: TokenStream) -> TokenStream {
-    wasmple_bridge_impl::wasmple_bridge_impl(attr.into(), item.into()).into()
+pub use inventory;
+
+pub struct TsString {
+    #[allow(dead_code)] // temporary avoid warning
+    script: &'static str,
 }
+
+impl TsString {
+    pub const fn new(script: &'static str) -> Self {
+        TsString { script }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+inventory::collect!(TsString);

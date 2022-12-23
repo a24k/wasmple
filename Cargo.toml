@@ -2,6 +2,7 @@
 members = [
     "wasmple",
     "wasmple_bridge",
+    "wasmple_bridge_attribute",
     "wasmple_bridge_impl",
     "wasmple_buffer",
     "wasmple_buffer_derive",

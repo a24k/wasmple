@@ -6,8 +6,6 @@ use syn::Item;
 
 use totstype::ToTsType;
 
-pub use inventory;
-
 pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let Ok(parsed) = syn::parse2::<Item>(item.clone()) else { unsupported!(item) };
 
@@ -17,23 +15,9 @@ pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream
         #item
 
         #[cfg(not(target_arch = "wasm32"))]
-        wasmple_bridge_impl::inventory::submit!(wasmple_bridge_impl::TsString::new(#script));
+        wasmple_bridge::inventory::submit!(wasmple_bridge::TsString::new(#script));
     }
 }
-
-pub struct TsString {
-    #[allow(dead_code)] // temporary avoid warning
-    script: &'static str,
-}
-
-impl TsString {
-    pub const fn new(script: &'static str) -> Self {
-        TsString { script }
-    }
-}
-
-#[cfg(not(target_arch = "wasm32"))]
-inventory::collect!(TsString);
 
 #[macro_export]
 macro_rules! unsupported {

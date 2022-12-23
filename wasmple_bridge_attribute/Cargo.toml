@@ -1,13 +1,11 @@
 [package]
-name = "wasmple_bridge"
+name = "wasmple_bridge_attribute"
 description = "a sample project for WebAssembly with Rust & SolidJS."
 version = "0.4.3"
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+proc-macro = true
 
 [dependencies]
-inventory = "0.3.3"
-wasmple_bridge_attribute = { path = "../wasmple_bridge_attribute" }
 wasmple_bridge_impl = { path = "../wasmple_bridge_impl" }
