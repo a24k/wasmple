@@ -11,6 +11,7 @@ crate-type = ["cdylib", "rlib"]
 proc-macro2 = "1.0.47"
 quote = "1.0.21"
 syn = "1.0.103"
+inventory = "0.3.3"
 
 [dev-dependencies]
 rstest = "0.15.0"

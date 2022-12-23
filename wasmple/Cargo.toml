@@ -11,6 +11,7 @@ crate-type = ["cdylib", "rlib"]
 itertools = "0.10.5"
 serde = { version = "1.0.147", features = ["derive"] }
 wasmple_bridge = { path = "../wasmple_bridge" }
+wasmple_bridge_impl = { path = "../wasmple_bridge_impl" }
 wasmple_buffer = { path = "../wasmple_buffer" }
 wasmple_console = { path = "../wasmple_console" }
 

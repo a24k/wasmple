@@ -6,15 +6,32 @@ use syn::Item;
 
 use totstype::ToTsType;
 
+pub use inventory;
+
 pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    if let Ok(item) = syn::parse2::<Item>(item.clone()) {
-        item.to_tstype();
-    }
+    let Ok(parsed) = syn::parse2::<Item>(item.clone()) else { unsupported!(item) };
+
+    let script = parsed.to_tstype().to_string();
 
     quote! {
         #item
+
+        wasmple_bridge_impl::inventory::submit!(wasmple_bridge_impl::TsString::new(#script));
     }
 }
+
+pub struct TsString {
+    #[allow(dead_code)] // temporary avoid warning
+    script: &'static str,
+}
+
+impl TsString {
+    pub const fn new(script: &'static str) -> Self {
+        TsString { script }
+    }
+}
+
+inventory::collect!(TsString);
 
 #[macro_export]
 macro_rules! unsupported {
@@ -32,6 +49,7 @@ mod tests {
 
     #[rstest]
     // empty
+    #[should_panic(expected = "unsupported TokenStream")]
     #[case::empty(quote! {})]
     // Rust tokens
     #[case::rust(quote! {
@@ -49,10 +67,6 @@ mod tests {
             input_ptr
         }
     })]
-    // TypeScript tokens, these are also valid as TokenStream in these cases
-    #[case::typescript(quote! { export type TestType = number; })]
-    #[case::typescript(quote! { export type TestStruct = { num: number, str: string }; })]
-    #[case::typescript(quote! { export type TestFn = (ptr: BufferPtr) => BufferPtr; })]
     fn starts_with_input_item(#[case] item: TokenStream) {
         let input = item.to_string();
         let output = super::wasmple_bridge_impl(TokenStream::new(), item).to_string();
