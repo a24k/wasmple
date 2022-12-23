@@ -1,6 +1,7 @@
 mod totstype;
 
 use proc_macro2::TokenStream;
+use quote::quote;
 use syn::Item;
 
 use totstype::ToTsType;
@@ -9,7 +10,10 @@ pub fn wasmple_bridge_impl(_attr: TokenStream, item: TokenStream) -> TokenStream
     if let Ok(item) = syn::parse2::<Item>(item.clone()) {
         item.to_tstype();
     }
-    item
+
+    quote! {
+        #item
+    }
 }
 
 #[macro_export]
@@ -49,10 +53,9 @@ mod tests {
     #[case::typescript(quote! { export type TestType = number; })]
     #[case::typescript(quote! { export type TestStruct = { num: number, str: string }; })]
     #[case::typescript(quote! { export type TestFn = (ptr: BufferPtr) => BufferPtr; })]
-    fn do_not_modify_input_item(#[case] item: TokenStream) {
-        assert_eq!(
-            item.to_string(),
-            super::wasmple_bridge_impl(TokenStream::new(), item).to_string()
-        );
+    fn starts_with_input_item(#[case] item: TokenStream) {
+        let input = item.to_string();
+        let output = super::wasmple_bridge_impl(TokenStream::new(), item).to_string();
+        assert!(output.starts_with(&input));
     }
 }
