@@ -127,4 +127,9 @@ mod tests {
             }
         }
     }
+
+    #[rstest]
+    fn dummy_generate_typescript() {
+        assert_eq!(wasmple_bridge::generate(), String::new());
+    }
 }
