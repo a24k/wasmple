@@ -9,6 +9,7 @@ impl ToTsType for Item {
         match self {
             Item::Type(item) => item.to_tstype(),
             Item::Struct(item) => item.to_tstype(),
+            Item::Fn(item) => item.to_tstype(),
             _ => unsupported!(self),
         }
     }
@@ -35,6 +36,13 @@ mod tests {
             num: u32,
             str: Option<String>,
             vec: Vec<String>,
+        }
+    })]
+    #[case(quote! {
+        export type FnTestFunction = (input_ptr: BufferPtr) => BufferPtr;
+    }, quote! {
+        pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
+            input_ptr
         }
     })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {

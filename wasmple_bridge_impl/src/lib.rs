@@ -47,7 +47,6 @@ mod tests {
             str: String,
         }
     })]
-    #[should_panic(expected = "unsupported Fn")]
     #[case::rust(quote! {
         pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
             input_ptr

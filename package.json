@@ -1,6 +1,6 @@
 {
     "name": "wasmple",
-    "version": "0.4.1",
+    "version": "0.4.5",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
         "bridge:ts": "cargo run --package wasmple --example generate-typescript > ./target/bridge.ts",
@@ -11,10 +11,11 @@
         "dev:wasm": "cargo build --target wasm32-unknown-unknown",
         "dev:copy": "cpx ./target/wasm32-unknown-unknown/debug/wasmple.wasm ./target/wasm32-unknown-unknown/",
         "watch:wasm": "cargo watch -x 'build --target wasm32-unknown-unknown'",
+        "watch:bridge:ts": "cargo watch -s 'cargo run --package wasmple --example generate-typescript > ./target/bridge.ts'",
         "watch:copy": "cpx ./target/wasm32-unknown-unknown/debug/wasmple.wasm ./target/wasm32-unknown-unknown/ --watch",
         "watch:js": "vite --clearScreen false",
         "predev": "run-s dev:wasm bridge:ts dev:copy",
-        "dev": "run-p watch:wasm bridge:ts watch:copy watch:js",
+        "dev": "run-p watch:wasm watch:bridge:ts watch:copy watch:js",
         "check:wasm:check": "cargo check --target wasm32-unknown-unknown",
         "check:wasm:clippy": "cargo clippy --target wasm32-unknown-unknown",
         "check:rust:check": "cargo check",

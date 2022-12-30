@@ -23,6 +23,7 @@ struct FnConvertReturns {
     reversed: String,
 }
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
     info!("[wasm] convert {}", input_ptr);
