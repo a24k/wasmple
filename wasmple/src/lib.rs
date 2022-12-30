@@ -51,6 +51,11 @@ fn _reverse(input: String) -> String {
     input.chars().rev().collect()
 }
 
+#[cfg(not(target_arch = "wasm32"))]
+pub fn generate_typescript() -> String {
+    wasmple_bridge::generate()
+}
+
 #[cfg(test)]
 mod tests {
     use rstest::*;
