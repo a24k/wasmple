@@ -24,7 +24,7 @@
         "check": "run-s check:wasm:check check:wasm:clippy check:rust:check check:rust:clippy check:js",
         "test:wasm": "cargo test",
         "test:js": "jest",
-        "test": "run-s test:wasm test:js",
+        "test": "run-s test:wasm bridge:ts test:js",
         "clean": "rimraf ./target ./dist"
     },
     "license": "MIT",
