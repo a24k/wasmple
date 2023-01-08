@@ -1,3 +1,6 @@
+import type { BufferPtr } from '../../target/bridge';
+export type { BufferPtr };
+
 export enum Type {
     I8,
     U8,
@@ -10,8 +13,6 @@ export enum Type {
     F32,
     F64,
 }
-
-export type BufferPtr = number;
 
 type FnAlloc = (t: Type, len: number) => number;
 type FnLength = (t: Type, ptr: BufferPtr) => number;
