@@ -1,8 +1,10 @@
 use std::alloc::Layout;
 use std::fmt::Debug;
 
+use wasmple_bridge::wasmple_bridge;
 use wasmple_console::debug;
 
+#[wasmple_bridge]
 pub type BufferPtr = usize;
 
 #[derive(Debug)]

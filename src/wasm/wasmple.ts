@@ -1,13 +1,10 @@
 import wasmurl from '../../target/wasm32-unknown-unknown/wasmple.wasm?url';
 
-import type { BufferPtr } from './buffer';
+import type { FnConvert, FnConvertParameters, FnConvertReturns } from '../../target/bridge';
+export type { FnConvertParameters, FnConvertReturns };
+
 import { WasmConsole } from './console';
 import { WasmBuffer } from './buffer';
-
-type FnConvert = (ptr: BufferPtr) => BufferPtr;
-
-export type FnConvertParameters = { a: string, b: string };
-export type FnConvertReturns = { interleaved: string, reversed: string };
 
 export class Wasmple {
 

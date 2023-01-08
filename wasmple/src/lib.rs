@@ -4,21 +4,26 @@ use serde::{Deserialize, Serialize};
 
 use wasmple_console::info;
 
+use wasmple_bridge::wasmple_bridge;
+
 use wasmple_buffer::convert::JsonConvertee;
 use wasmple_buffer::BufferPtr;
 
+#[wasmple_bridge]
 #[derive(Serialize, Deserialize, JsonConvertee, Debug, PartialEq, Eq)]
 struct FnConvertParameters {
     a: String,
     b: String,
 }
 
+#[wasmple_bridge]
 #[derive(Serialize, Deserialize, JsonConvertee, Debug, PartialEq, Eq)]
 struct FnConvertReturns {
     interleaved: String,
     reversed: String,
 }
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn convert(input_ptr: BufferPtr) -> BufferPtr {
     info!("[wasm] convert {}", input_ptr);
@@ -45,6 +50,11 @@ fn _interleave(input_a: String, input_b: String) -> String {
 
 fn _reverse(input: String) -> String {
     input.chars().rev().collect()
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub fn generate_typescript() -> String {
+    wasmple_bridge::generate()
 }
 
 #[cfg(test)]

@@ -1,0 +1,13 @@
+[package]
+name = "wasmple_bridge"
+description = "a sample project for WebAssembly with Rust & SolidJS."
+version = "0.4.5"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+inventory = "0.3.3"
+wasmple_bridge_attribute = { path = "../wasmple_bridge_attribute" }
+wasmple_bridge_impl = { path = "../wasmple_bridge_impl" }

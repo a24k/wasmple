@@ -1,12 +1,11 @@
 [package]
-name = "wasmple_buffer_derive"
+name = "wasmple_bridge_attribute"
 description = "a sample project for WebAssembly with Rust & SolidJS."
-version = "0.4.2"
+version = "0.4.3"
 edition = "2021"
 
 [lib]
 proc-macro = true
 
 [dependencies]
-quote = "1.0.21"
-syn = "1.0.103"
+wasmple_bridge_impl = { path = "../wasmple_bridge_impl" }
