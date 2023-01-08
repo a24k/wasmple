@@ -35,3 +35,7 @@
 ## 20221114 define-macros
 
 [Zenn](https://zenn.dev/a24k/articles/20221113-wasmple-define-macros) / [Source](https://github.com/a24k/wasmple/tree/d0426d8cb08f07c6829421b72e6637cce4163884) / [Demo](https://84bf667c.wasmple.pages.dev/)
+
+## 20221231 wasmple-bridge
+
+[Zenn](https://zenn.dev/a24k/articles/20221231-wasmple-bridge) / [Source](https://github.com/a24k/wasmple/tree/df1afd13ce81a9b37c74b10bd4bcea330fd3986d) / [Demo](https://7661eb99.wasmple.pages.dev/)
