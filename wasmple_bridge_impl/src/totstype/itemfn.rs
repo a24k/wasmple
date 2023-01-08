@@ -20,7 +20,7 @@ impl ToTsType for ItemFn {
         let output = &self.sig.output;
         match output {
             ReturnType::Default => {
-                quote! { export type #ident = #inputs; }
+                quote! { export type #ident = #inputs => void; }
             }
             ReturnType::Type(_, ty) => {
                 let ty = ty.to_tstype();
@@ -39,7 +39,7 @@ mod tests {
 
     #[rstest]
     #[case(quote! {
-        export type FnTestFunctionA = (a: InputTypeA, b: InputTypeB);
+        export type FnTestFunctionA = (a: InputTypeA, b: InputTypeB) => void;
     }, quote! {
         fn test_function_a(a: InputTypeA, b: InputTypeB) { }
     })]
