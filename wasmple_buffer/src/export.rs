@@ -1,7 +1,10 @@
+use wasmple_bridge::wasmple_bridge;
+
 use super::define::T;
 use super::BufferManager;
 use super::BufferPtr;
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn buffer_alloc(t: u8, len: usize) -> BufferPtr {
     let arc = match T::from(t) {
@@ -19,6 +22,7 @@ pub extern "C" fn buffer_alloc(t: u8, len: usize) -> BufferPtr {
     arc.map_or(0, |arc| arc.lock().unwrap().ptr())
 }
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn buffer_length(t: u8, ptr: BufferPtr) -> usize {
     match T::from(t) {
@@ -35,11 +39,13 @@ pub extern "C" fn buffer_length(t: u8, ptr: BufferPtr) -> usize {
     }
 }
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn buffer_dealloc(ptr: BufferPtr) {
     BufferManager::lock().dealloc(ptr);
 }
 
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn buffer_clear() {
     BufferManager::lock().clear();
