@@ -1,3 +1,6 @@
+use wasmple_bridge::wasmple_bridge;
+
+#[wasmple_bridge]
 #[derive(Debug, PartialEq, Eq)]
 pub(super) enum T {
     I8,

@@ -1,6 +1,9 @@
 use std::panic;
 use std::sync::Once;
 
+use wasmple_bridge::wasmple_bridge;
+
+#[wasmple_bridge]
 #[no_mangle]
 pub extern "C" fn console_set_panic_hook() -> bool {
     static ONCE: Once = Once::new();

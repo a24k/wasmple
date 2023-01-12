@@ -1,12 +1,7 @@
-export enum LogLevel {
-    Log,
-    Debug,
-    Info,
-    Warn,
-    Error,
-}
+import type { FnConsoleSetPanicHook } from '../../target/bridge-console';
 
-type FnSetPanicHook = () => boolean;
+import { LogLevel } from '../../target/bridge-console';
+export { LogLevel };
 
 export class WasmConsole {
 
@@ -14,7 +9,7 @@ export class WasmConsole {
 
     public init(wasm: WebAssembly.Exports) {
         this.memory = wasm.memory as WebAssembly.Memory;
-        (wasm.console_set_panic_hook as FnSetPanicHook)();
+        (wasm.console_set_panic_hook as FnConsoleSetPanicHook)();
     }
 
     public imports = {
