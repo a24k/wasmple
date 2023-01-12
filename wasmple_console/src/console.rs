@@ -1,3 +1,6 @@
+use wasmple_bridge::wasmple_bridge;
+
+#[wasmple_bridge]
 enum LogLevel {
     Log,
     Debug,
