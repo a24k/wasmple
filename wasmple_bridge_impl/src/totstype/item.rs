@@ -10,6 +10,7 @@ impl ToTsType for Item {
             Item::Type(item) => item.to_tstype(),
             Item::Struct(item) => item.to_tstype(),
             Item::Fn(item) => item.to_tstype(),
+            Item::Enum(item) => item.to_tstype(),
             _ => unsupported!(self),
         }
     }
@@ -44,6 +45,11 @@ mod tests {
         pub extern "C" fn test_function(input_ptr: BufferPtr) -> BufferPtr {
             input_ptr
         }
+    })]
+    #[case(quote! {
+        export enum T { I8, U8, I16, U16, I32, U32, I64, U64, F32, F64 }
+    }, quote! {
+        pub(super) enum T { I8, U8, I16, U16, I32, U32, I64, U64, F32, F64, }
     })]
     fn convert_to_tstype(#[case] expected: TokenStream, #[case] item: TokenStream) {
         let item: Item = syn::parse2(item).unwrap();

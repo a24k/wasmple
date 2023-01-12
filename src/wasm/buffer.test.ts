@@ -1,20 +1,20 @@
 import { describe, test, expect } from '@jest/globals';
 
-import { Type } from './buffer';
+import { T } from './buffer';
 
 describe('buffer', () => {
-    describe('enum Type', () => {
+    describe('enum T', () => {
         test.each([
-            { expected: 0, input: Type.I8 },
-            { expected: 1, input: Type.U8 },
-            { expected: 2, input: Type.I16 },
-            { expected: 3, input: Type.U16 },
-            { expected: 4, input: Type.I32 },
-            { expected: 5, input: Type.U32 },
-            { expected: 6, input: Type.I64 },
-            { expected: 7, input: Type.U64 },
-            { expected: 8, input: Type.F32 },
-            { expected: 9, input: Type.F64 },
+            { expected: 0, input: T.I8 },
+            { expected: 1, input: T.U8 },
+            { expected: 2, input: T.I16 },
+            { expected: 3, input: T.U16 },
+            { expected: 4, input: T.I32 },
+            { expected: 5, input: T.U32 },
+            { expected: 6, input: T.I64 },
+            { expected: 7, input: T.U64 },
+            { expected: 8, input: T.F32 },
+            { expected: 9, input: T.F64 },
         ])('definition::case_$#', ({ expected, input }) => {
             expect(input).toBe(expected);
         });
