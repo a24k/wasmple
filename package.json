@@ -3,8 +3,8 @@
     "version": "0.4.5",
     "description": "a sample project for WebAssembly with Rust & SolidJS.",
     "scripts": {
-        "bridge:ts:wasmple": "cargo run --package wasmple --example generate-typescript > ./target/bridge-wasmple.ts",
-        "bridge:ts:buffer": "cargo run --package wasmple_buffer --example generate-typescript > ./target/bridge-buffer.ts",
+        "bridge:ts:wasmple": "cargo run --package wasmple --example bridge-ts-wasmple > ./target/bridge-wasmple.ts",
+        "bridge:ts:buffer": "cargo run --package wasmple_buffer --example bridge-ts-buffer > ./target/bridge-buffer.ts",
         "bridge:ts": "run-s bridge:ts:wasmple bridge:ts:buffer",
         "build:wasm": "cargo build --target wasm32-unknown-unknown --release",
         "postbuild:wasm": "wasm-snip -o ./target/wasm32-unknown-unknown/wasmple.wasm ./target/wasm32-unknown-unknown/release/wasmple.wasm",
