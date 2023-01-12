@@ -1,6 +1,6 @@
 import wasmurl from '../../target/wasm32-unknown-unknown/wasmple.wasm?url';
 
-import type { FnConvert, FnConvertParameters, FnConvertReturns } from '../../target/bridge';
+import type { FnConvert, FnConvertParameters, FnConvertReturns } from '../../target/bridge-wasmple';
 export type { FnConvertParameters, FnConvertReturns };
 
 import { WasmConsole } from './console';

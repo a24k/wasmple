@@ -1,4 +1,4 @@
-import type { BufferPtr } from '../../target/bridge';
+import type { BufferPtr, FnBufferClear, FnBufferDealloc, FnBufferLength, FnBufferAlloc } from '../../target/bridge-buffer';
 export type { BufferPtr };
 
 export enum Type {
@@ -14,27 +14,22 @@ export enum Type {
     F64,
 }
 
-type FnAlloc = (t: Type, len: number) => number;
-type FnLength = (t: Type, ptr: BufferPtr) => number;
-type FnDealloc = (ptr: BufferPtr) => void;
-type FnClear = () => void;
-
 export class WasmBuffer {
 
     private memory: WebAssembly.Memory;
 
-    public alloc: FnAlloc;
-    public length: FnLength;
-    public dealloc: FnDealloc;
-    public clear: FnClear;
+    public alloc: FnBufferAlloc;
+    public length: FnBufferLength;
+    public dealloc: FnBufferDealloc;
+    public clear: FnBufferClear;
 
     constructor(wasm: WebAssembly.Exports) {
         this.memory = wasm.memory as WebAssembly.Memory;
 
-        this.alloc = wasm.buffer_alloc as FnAlloc;
-        this.length = wasm.buffer_length as FnLength;
-        this.dealloc = wasm.buffer_dealloc as FnDealloc;
-        this.clear = wasm.buffer_clear as FnClear;
+        this.alloc = wasm.buffer_alloc as FnBufferAlloc;
+        this.length = wasm.buffer_length as FnBufferLength;
+        this.dealloc = wasm.buffer_dealloc as FnBufferDealloc;
+        this.clear = wasm.buffer_clear as FnBufferClear;
     }
 
     public slice = {
