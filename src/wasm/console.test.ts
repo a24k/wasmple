@@ -10,7 +10,7 @@ describe('console', () => {
             { expected: 2, input: LogLevel.Info },
             { expected: 3, input: LogLevel.Warn },
             { expected: 4, input: LogLevel.Error },
-        ])('definition::case_$#', ({ expected, input }) => {
+        ])('definition::case_$#', ({ expected, input }: { expected: number; input: number }) => {
             expect(input).toBe(expected);
         });
     });
