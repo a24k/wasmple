@@ -5,7 +5,7 @@ version = "0.4.6"
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["rlib"]
 
 [dependencies]
 convert_case = "0.6.0"
