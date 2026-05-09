@@ -30,10 +30,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
       - run: bun run build
       - name: publish to cloudflare pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          projectName: wasmple
-          directory: ./dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./dist --project-name=wasmple
