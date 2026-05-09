@@ -5,13 +5,13 @@ version = "0.4.6"
 edition = "2021"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["rlib"]
 
 [dependencies]
 convert_case = "0.6.0"
 proc-macro2 = "1.0.47"
 quote = "1.0.21"
-syn = "1.0.103"
+syn = { version = "1.0.103", features = ["full", "extra-traits"] }
 
 [dev-dependencies]
 rstest = "0.15.0"

@@ -8,7 +8,7 @@ use wasmple_bridge::wasmple_bridge;
 pub extern "C" fn console_set_panic_hook() -> bool {
     static ONCE: Once = Once::new();
     ONCE.call_once(|| {
-        fn panic_hook(info: &panic::PanicInfo) {
+        fn panic_hook(info: &panic::PanicHookInfo) {
            super::error(info.to_string());
         }
         panic::set_hook(Box::new(panic_hook));

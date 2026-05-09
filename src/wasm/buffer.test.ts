@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'bun:test';
 
 import { T } from './buffer';
 
@@ -15,7 +15,7 @@ describe('buffer', () => {
             { expected: 7, input: T.U64 },
             { expected: 8, input: T.F32 },
             { expected: 9, input: T.F64 },
-        ])('definition::case_$#', ({ expected, input }) => {
+        ])('definition::case_$#', ({ expected, input }: { expected: number; input: number }) => {
             expect(input).toBe(expected);
         });
     });

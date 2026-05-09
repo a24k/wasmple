@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'bun:test';
 
 import { LogLevel } from './console';
 
@@ -10,7 +10,7 @@ describe('console', () => {
             { expected: 2, input: LogLevel.Info },
             { expected: 3, input: LogLevel.Warn },
             { expected: 4, input: LogLevel.Error },
-        ])('definition::case_$#', ({ expected, input }) => {
+        ])('definition::case_$#', ({ expected, input }: { expected: number; input: number }) => {
             expect(input).toBe(expected);
         });
     });
